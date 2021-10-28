@@ -30,8 +30,66 @@
                 background-color: darkslategrey;
             }
         </style>
+        <script type="text/javascript">
+            function load_max(what_id, max_id) {
+                document.getElementById(what_id).innerText = parseInt(document.getElementById(max_id).innerText);
+            }
+
+            function load_max_hp() {
+                load_max("hp", "max_hp");
+            }
+
+            function load_max_mana() {
+                load_max("mana", "max_mana");
+            }
+
+            function colorize(what_id, max_id) {
+                var points = document.getElementById(what_id).innerText;
+                if (points < 0.33 * parseInt(document.getElementById(max_id).innerText)) {
+                    document.getElementById(what_id).style.color = "red";
+                    document.getElementById(what_id).style.fontWeight = "bold";
+                } else if (points < 0.67 * parseInt(document.getElementById(max_id).innerText)) {
+                    document.getElementById(what_id).style.color = "orange";
+                } else {
+                    document.getElementById(what_id).style.color = "green";
+                }
+            }
+
+            function colorize_hp() {
+                colorize("hp", "max_hp");
+            }
+
+            function colorize_mana() {
+                colorize("mana", "max_mana");
+            }
+
+            function change_up_down(what_id, max_id, up) {
+                if (up) {
+                    if (parseInt(document.getElementById(what_id).innerText) < parseInt(document.getElementById(max_id).innerText))
+                    {
+                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) + 1;
+                    }
+                } else {
+                    if (parseInt(document.getElementById(what_id).innerText) > 0)
+                    {
+                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) - 1;
+                    }
+                }
+            }
+
+            function change_hp(up) {
+                change_up_down("hp", "max_hp", up);
+                colorize_hp();
+            }
+
+            function change_mana(up) {
+                change_up_down("mana", "max_mana", up);
+                colorize_mana();
+            }
+            
+        </script>
     </head>
-    <body>
+    <body onload="load_max_hp(), load_max_mana(), colorize_hp(), colorize_mana()">
         <div>
             <img src="./mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret" style="float: right">
         </div>
@@ -58,11 +116,15 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="hp">10</td>
-                                <td style="color: green; font-size: large"><strong>10</strong></td>
+                                <td id="hp"></td>
+                                <td id="max_hp" style="color: green; font-size: large"><strong>10</strong></td>
                             </tr>
                         </tbody>
                     </table>
+                    <div id=health_buttons style="margin: 8px 0px; text-align: center;">
+                        <button type="button" onclick="change_hp(1)" style="background-color: aquamarine; border-color: teal; font-size: large">+ HP</button>
+                        <button type="button" onclick="change_hp(0)" style="background-color: aquamarine; border-color: teal; font-size: large">- HP</button>
+                    </div>
                 </div>
                 <div id='mana-points' style="margin-right: 8px">
                     <h3>Pùńktë Mòcë</h3>
@@ -75,11 +137,15 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="mana">10</td>
-                                <td style="color: green; font-size: large"><strong>10</strong></td>
+                                <td id="mana"></td>
+                                <td id="max_mana" style="color: green; font-size: large"><strong>10</strong></td>
                             </tr>
                         </tbody>
                     </table>
+                    <div id=mana_buttons style="margin: 8px 0px; text-align: center;">
+                        <button type="button" onclick="change_mana(1)" style="background-color: aquamarine; border-color: teal; font-size: large">+ MP</button>
+                        <button type="button" onclick="change_mana(0)" style="background-color: aquamarine; border-color: teal; font-size: large">- MP</button>
+                    </div>
                 </div>
             </div>
             <h3 id='abilities'>Przédné céchë</h3>
