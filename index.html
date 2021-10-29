@@ -18,18 +18,40 @@
                 color: black;
             }
             h1 {
+                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
                 color: deeppink;
             }
             h2 {
+                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
                 color: crimson;
             }
             h3 {
+                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
                 color: hotpink;
             }
+            h4 {
+                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+                color: hotpink;
+                font-size: large;
+            }
             body {
-                background-color: darkslategrey;
+                background-color: rgba(119, 130, 155, 0.637);
+            }
+            .small-button {
+                background-color: aquamarine;
+                border-color: teal;
+                font-size: medium;
+                width: 56px;
+            }
+            .big-button {
+                background-color: aquamarine;
+                border-color: teal;
+                font-size: medium;
+                width: 144px;
+                margin: 2px;
             }
         </style>
+
         <script type="text/javascript">
             function load_max(what_id, max_id) {
                 document.getElementById(what_id).innerText = parseInt(document.getElementById(max_id).innerText);
@@ -44,7 +66,7 @@
             }
 
             function colorize(what_id, max_id) {
-                var points = document.getElementById(what_id).innerText;
+                let points = document.getElementById(what_id).innerText;
                 if (points < 0.33 * parseInt(document.getElementById(max_id).innerText)) {
                     document.getElementById(what_id).style.color = "red";
                     document.getElementById(what_id).style.fontWeight = "bold";
@@ -87,21 +109,168 @@
                 colorize_mana();
             }
             
+            function change_sober_mind(up) {
+                if (up) {
+                    document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) + 1;
+                } else {
+                    if (parseInt(document.getElementById("sober-mind").innerText) > 0)
+                    {
+                        document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) - 1;
+                    }
+                }
+            }
+            
+            function change_amount(what_id, up) {
+                if (up) {
+                    document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) + 1;
+                } else {
+                    if (parseInt(document.getElementById(what_id).innerText) > 0)
+                    {
+                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) - 1;
+                    }
+                }
+            }
+            
+            function throw_dice(dice_size) {
+                var array = new Uint32Array(1);
+                window.crypto.getRandomValues(array);
+                return array[0] % dice_size + 1;
+            }
+            
+            function throw_d3(params) {
+                return throw_dice(3);
+            }
+            
+            function throw_d4(params) {
+                return throw_dice(4);
+            }
+            
+            function throw_d6(params) {
+                return throw_dice(6);
+            }
+            
+            function throw_d12(params) {
+                return throw_dice(12);
+            }
+            
+            function throw_d20(params) {
+                return throw_dice(20);
+            }
+            
+            function throw_d32(params) {
+                return throw_dice(32);
+            }
+            
+            function throw_d100(params) {
+                return throw_dice(100);
+            }
+
+            function colorize_test(test_button_id) {
+                let points = parseInt(document.getElementById(test_button_id).innerText);
+                if (points < 16) {
+                    document.getElementById(test_button_id).style.backgroundColor = "red";
+                } else if (points >= 29) {
+                    document.getElementById(test_button_id).style.backgroundColor = "gold";
+                } else {
+                    document.getElementById(test_button_id).style.backgroundColor = "green";
+                }
+            }
+
+            function normal_test(skill_id) {
+                let sum = throw_d32() + parseInt(document.getElementById(skill_id).innerText);
+                document.getElementById(skill_id + "-button").innerText = sum;
+                colorize_test(skill_id + "-button")
+            }
+
+            function penalty_test() {
+                let sum = Math.min(throw_d20(), throw_d20()) + throw_d12();
+                document.getElementById("no-skill-button").innerText = sum;
+                colorize_test("no-skill-button")
+            }
+
+            function premium_test(skill_id) {
+                let sum = Math.max(throw_d20(), throw_d20()) + throw_d12() + parseInt(document.getElementById(skill_id).innerText);
+                document.getElementById(skill_id + "-button").innerText = sum;
+                colorize_test(skill_id + "-button")
+            }
+
+            function normal_defence() {
+                let sum = throw_d32() + parseInt(document.getElementById("defence").innerText);
+                document.getElementById("normal-defence").innerText = sum;
+            }
+
+            function weak_defence() {
+                let sum = throw_d20() + parseInt(document.getElementById("defence").innerText);
+                document.getElementById("weak-defence").innerText = sum;
+            }
+
+            function very_weak_defence() {
+                let sum = throw_d12() + parseInt(document.getElementById("defence").innerText);
+                document.getElementById("very-weak-defence").innerText = sum;
+            }
+
+            function run_away_sm() {
+                normal_test('sober-mind');
+                document.getElementById("run-away-sm").innerText = document.getElementById("sober-mind-button").innerText;
+            }
+
+            function run_away_speed() {
+                normal_test('speed');
+                document.getElementById("run-away-speed").innerText = document.getElementById("speed-button").innerText;
+            }
+
+            function normal_attack() {
+                let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
+                document.getElementById("normal-attack").innerText = sum;
+            }
+
+            function counter_attack_off() {
+                normal_attack();
+                document.getElementById("counter-attack-off").innerText = document.getElementById("normal-attack").innerText;
+            }
+
+            function counter_attack_def() {
+                normal_defence();
+                document.getElementById("counter-attack-def").innerText = document.getElementById("normal-defence").innerText;
+            }
+
+            function counter_attack_dex() {
+                normal_test('dexterity');
+                document.getElementById("counter-attack-dex").innerText = document.getElementById("dexterity-button").innerText;
+            }
+
+            function double_attack() {
+                let sum = throw_d20() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
+                document.getElementById("double-attack").innerText = sum;
+            }
+
+            function fury_attack() {
+                let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("mod").innerText);
+                document.getElementById("normal-attack").innerText = sum;
+            }
+
+            function damage() {
+                document.getElementById("damage").innerText = throw_d6();
+            }
+
         </script>
     </head>
     <body onload="load_max_hp(), load_max_mana(), colorize_hp(), colorize_mana()">
         <div>
             <img src="./mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret" style="float: right">
         </div>
+
         <div id="info">
             <h1 id="name">Miono: Ifigeniô</h1>
             <h2 id='race'>Rasa: Bòrówcka z Ôstu</h2>
             <h2 id='profession'>Wark: Mniszka</h2>
         </div>
+
         <div id='biography'>
             <h2 style="color: orangered">Biografiô</h2>
             <p>Plac na biografiã</p>
         </div>
+
         <div id='characteristics'>
             <h2>Charakteristika</h2>
             <div id="points" style="display: flex">
@@ -121,9 +290,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div id=health_buttons style="margin: 8px 0px; text-align: center;">
-                        <button type="button" onclick="change_hp(1)" style="background-color: aquamarine; border-color: teal; font-size: large">+ HP</button>
-                        <button type="button" onclick="change_hp(0)" style="background-color: aquamarine; border-color: teal; font-size: large">- HP</button>
+                    <div id=health-buttons style="margin: 8px 0px; text-align: center;">
+                        <button type="button" class="small-button" onclick="change_hp(1)">+ PŻ</button>
+                        <button type="button" class="small-button" onclick="change_hp(0)">- PŻ</button>
                     </div>
                 </div>
                 <div id='mana-points' style="margin-right: 8px">
@@ -142,188 +311,292 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div id=mana_buttons style="margin: 8px 0px; text-align: center;">
-                        <button type="button" onclick="change_mana(1)" style="background-color: aquamarine; border-color: teal; font-size: large">+ MP</button>
-                        <button type="button" onclick="change_mana(0)" style="background-color: aquamarine; border-color: teal; font-size: large">- MP</button>
+                    <div id=mana-buttons style="margin: 8px 0px; text-align: center;">
+                        <button type="button" class="small-button" onclick="change_mana(1)">+ PM</button>
+                        <button type="button" class="small-button" onclick="change_mana(0)">- PM</button>
                     </div>
                 </div>
             </div>
-            <h3 id='abilities'>Przédné céchë</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th style='text-align:left;'><strong>Pòzwa</strong></th>
-                        <th><strong>Pùńktë</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style='text-align:left;'>Budowa Cała</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Kraft</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Kòndicjô</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Chùtkòsc</td>
-                        <td>8</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Jintelekt</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Zrãcznosc</td>
-                        <td>8</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Trzezwi rozëm</td>
-                        <td>6</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id='combat' style="display: flex">
+
+            <h3>Przédné znanczi</h3>
+            <div id='abilities' style="display: flex">
                 <div style="margin-right: 8px">
-                    <h3>Biôtka</h3>
                     <table>
                         <thead>
                             <tr>
-                                <th><strong>Atak</strong></th>
-                                <th><strong>Òbróna</strong></th>
+                                <th style='text-align:left;'><strong>Pòzwa</strong></th>
+                                <th><strong>Pùńktë</strong></th>
+                                <th><strong>Test</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>8</td>
-                                <td>2</td>
+                                <td style='text-align:left;'>Bùdowa Cała</td>
+                                <td id="physique">5</td>
+                                <td><button type="button" class="big-button" id="physique-button" onclick="normal_test('physique')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Kraft</td>
+                                <td id="strength">4</td>
+                                <td><button type="button" class="big-button" id="strength-button" onclick="normal_test('strength')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Kòndicjô</td>
+                                <td id="stamina">5</td>
+                                <td><button type="button" class="big-button" id="stamina-button" onclick="normal_test('stamina')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Chùtkòsc</td>
+                                <td id="speed">8</td>
+                                <td><button type="button" class="big-button" id="speed-button" onclick="normal_test('speed')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Jintelekt</td>
+                                <td id="intelligence">10</td>
+                                <td><button type="button" class="big-button" id="intelligence-button" onclick="normal_test('intelligence')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Zrãcznosc</td>
+                                <td id="dexterity">8</td>
+                                <td><button type="button" class="big-button" id="dexterity-button" onclick="normal_test('dexterity')">Szmërgnij knôblã</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
                 <div style="margin-right: 8px">
-                    <h3>Atakòwanié</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style='text-align:left;'>Trzezwi rozëm</th>
+                                <th><strong>Test</strong></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td id="sober-mind">6</td>
+                            <td><button type="button" class="big-button" id="sober-mind-button" onclick="normal_test('sober-mind')">Szmërgnij knôblã</button></td>
+                        </tr>
+                    </table>
+                    <div id=sober-mind-buttons style="margin: 8px 0px;">
+                        <button type="button" class="small-button" onclick="change_sober_mind(1)">+ TR</button>
+                        <button type="button" class="small-button" onclick="change_sober_mind(0)">- TR</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Biôtka</h3>
+            <div id='combat' style="display: flex">
+                <div style="margin-right: 8px;">
+                    <div>
+                        <h4>Statisticzi</h4>
+                        <table style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th><strong>Atak</strong></th>
+                                    <th><strong>Òbróna</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="attack">8</td>
+                                    <td id="defence">2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Òbrażenia</h4>
+                        <button type="button" class="big-button" id="damage" onclick="damage()" style="height: 64px; font-size: larger; background-color: lightcoral;">Szmërgnij knôblã</button>
+                    </div>
+                </div>
+
+                <div style="margin-right: 8px">
+                    <h4>Atakòwanié</h4>
                     <table>
                         <thead>
                             <tr>
                                 <th><strong>Zwëczajny atak</strong></th>
                                 <th><strong>Dristatak</strong></th>
-                                <th><strong>Dëbeltatak</strong></th>
-                                <th><strong>Kònteratak</strong></th>
-                                <th><strong>Òbróna</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>button</td>
-                                <td>button</td>
-                                <td>button</td>
-                                <td>button</td>
-                                <td>button</td>
+                                <td><button type="button" class="big-button" id="normal-attack" onclick="normal_attack()">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="fury-attack" onclick="fury_attack()">Szmërgnij knôblã</button></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th><strong>Dëbeltatak</strong></th>
+                                <th><strong>Kònteratak</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><button type="button" class="big-button" id="double-attack" onclick="double_attack()">Szmërgnij knôblã</button></td>
+                                <td>
+                                    <button type="button" class="big-button" id="counter-attack-off" onclick="counter_attack_off()">Szmërgnij knôblã</button><br>
+                                    <button type="button" class="big-button" id="counter-attack-def" onclick="counter_attack_def()">Szmërgnij knôblã</button><br>
+                                    <button type="button" class="big-button" id="counter-attack-dex" onclick="counter_attack_dex()">Szmërgnij knôblã</button>
+                                </td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-right: 8px">
+                    <h4>Bronienié sã</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><strong>Zwëczajnô òbróna</strong></th>
+                                <th><strong>Słabô òbróna</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><button type="button" class="big-button" id="normal-defence" onclick="normal_defence()">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="weak-defence" onclick="weak_defence()">Szmërgnij knôblã</button></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th><strong>Baro słabô òbróna</strong></th>
+                                <th><strong>Ùcék</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><button type="button" class="big-button" id="very-weak-defence" onclick="very_weak_defence()">Szmërgnij knôblã</button></td>
+                                <td>
+                                    <button type="button" class="big-button" id="run-away-sm" onclick="run_away_sm()">Szmërgnij knôblã</button><br>
+                                    <button type="button" class="big-button" id="run-away-speed" onclick="run_away_speed()">Szmërgnij knôblã</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <h3 id='skills'>Trimë</h3>
+
+            <h3>Trimë</h3>
+            <div id="skills" style="display: flex;">
+                <div id='skills-generic' style="margin-right: 8px">
+                    <h4>Òglowé trimë</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style='text-align:left;'><strong>Pòzwa</strong></th>
+                                <th><strong>Pùńktë</strong></th>
+                                <th><strong>Test</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style='text-align:left;'>Skrôdanié</td>
+                                <td id="sneak">3</td>
+                                <td><button type="button" class="big-button" id="sneak-button" onclick="normal_test('sneak')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Pòézjô</td>
+                                <td id="poetry">6</td>
+                                <td><button type="button" class="big-button" id="poetry-button" onclick="normal_test('poetry')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Kamùflôż</td>
+                                <td id="hide">3</td>
+                                <td><button type="button" class="big-button" id="hide-button" onclick="normal_test('hide')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Znajemnosc nôtërë</td>
+                                <td id="nature-knowledge">8</td>
+                                <td><button type="button" class="big-button" id="nature-knowledge-button" onclick="normal_test('nature-knowledge')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Alchemiô</td>
+                                <td id="alchemy">9</td>
+                                <td><button type="button" class="big-button" id="alchemy-button" onclick="normal_test('alchemy')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Magia Gòrzana</td>
+                                <td id="black-magic">11</td>
+                                <td><button type="button" class="big-button" id="black-magic-button" onclick="normal_test('black-magic')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Òbróbka metalów</td>
+                                <td id="metal-processing">1</td>
+                                <td><button type="button" class="big-button" id="metal-processing-button" onclick="normal_test('metal-processing')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Òbróbka kamiénia</td>
+                                <td id="stone-processing">1</td>
+                                <td><button type="button" class="big-button" id="stone-processing-button" onclick="normal_test('stone-processing')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Òbróbka drzewa</td>
+                                <td id="wood-processing">1</td>
+                                <td><button type="button" class="big-button" id="wood-processing-button" onclick="normal_test('wood-processing')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Znajemnosc kùltów</td>
+                                <td id="cults-knowledge">4</td>
+                                <td><button type="button" class="big-button" id="cults-knowledge-button" onclick="normal_test('cults-knowledge')">Szmërgnij knôblã</button></td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:left;'>Łączba z dëchama</td>
+                                <td id="medium">5</td>
+                                <td><button type="button" class="big-button" id="medium-button" onclick="normal_test('medium')">Szmërgnij knôblã</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id='skills-detail' style="margin-right: 8px">
+                    <h4>Drobnotowé trimë</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style='text-align:left;'><strong>Pòzwa</strong></th>
+                                <th><strong>Pùńktë</strong></th>
+                                <th><strong>Test</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style='text-align:left;'>Szmërganié fiolkama</td>
+                                <td id="throw-vial">1</td>
+                                <td><button type="button" class="big-button" id="throw-vial-button" onclick="premium_test('throw-vial')">Szmërgnij knôblã</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id='skills-empty' style="margin-right: 8px">
+                    <h4>Felëjącé trimë</h4>
+                    <button type="button" class="big-button" id="no-skill-button" onclick="penalty_test('no-skill')">Szmërgnij knôblã</button>
+                </div>
+            </div>
+
+            <h3 id='weapons-knowledge'>Rozmiałosc broni</h3>
             <table>
                 <thead>
                     <tr>
-                        <th style='text-align:left;'><strong>Pòzwa</strong></th>
-                        <th><strong>Pùńktë</strong></th>
-                        <th><strong>Test</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style='text-align:left;'>Skrôdanié</td>
-                        <td>3</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Pòézjô</td>
-                        <td>6</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Kamùflôż</td>
-                        <td>3</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Znajemnosc nôtërë</td>
-                        <td>8</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Alchemiô</td>
-                        <td>9</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Magia Gòrzana</td>
-                        <td>11</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Òbróbka metalów</td>
-                        <td>1</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Òbróbka kamiénia</td>
-                        <td>1</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Òbróbka drzewa</td>
-                        <td>1</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Znajemnosc kùltów</td>
-                        <td>4</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Łączba z dëchama</td>
-                        <td>5</td>
-                        <td>button</td>
-                    </tr>
-                    <tr>
-                        <td style='text-align:left;'>Szmërganié fiolkama</td>
-                        <td>1</td>
-                        <td>button</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3 id='weapons=knowledge'>Rozmiałosc broni</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th style='text-align:left;'><strong>Broń</strong></th>
-                        <th><strong>Kategòriô</strong></th>
                         <th><strong>Niwizna</strong></th>
+                        <th><strong>Kategòriô</strong></th>
                         <th><strong>Mòdifikatór atakù</strong></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style='text-align:left;'>Topór</td>
-                        <td>II</td>
-                        <td>5</td>
-                        <td>+1</td>
+                        <td id="known-weapon-level">5</td>
+                        <td id="known-weapon-category">II</td>
+                        <td id="known-weapon-modificator">+1</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
         <div id='magic'>
             <h2>Czarë</h2>
-            <table>
+            <table id="magic-table">
                 <thead>
                     <tr>
                         <th style='text-align:left;'><strong>Zôklãcé</strong></th>
@@ -348,55 +621,89 @@
                 </tbody>
             </table>
         </div>
+
         <div id='equipment'>
             <h2>Ekwipùnk</h2>
-            <table>
+            <table id="equipment-table">
                 <thead>
                     <tr>
                         <th style='text-align:left;'><strong>Przedmiot</strong></th>
                         <th><strong>Wielena</strong></th>
+                        <th><strong>+ / -</strong></th>
                         <th style='text-align:left;'><strong>Òpis</strong></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td style='text-align:left;'>Fiolka krwi</td>
-                        <td>8</td>
+                        <td id="item_0">8</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_0', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_0', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Fiolka z krwią</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Złoté gùldenë</td>
-                        <td>1</td>
+                        <td id="item_1">1</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_1', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_1', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Dëtczi Sarcenie</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Miészk grzibów</td>
-                        <td>3</td>
+                        <td id="item_2">3</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_2', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_2', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Miészk z halucynogennyma grzibkama</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Laska Gòrzana</td>
-                        <td>1</td>
+                        <td id="item_3">1</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_3', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_3', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Artefakt z zakònu Gòrzana na Ôsce. Nieznóné dzejanié.</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Topór</td>
-                        <td>1</td>
+                        <td id="item_4">1</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_4', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_4', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Zwëczajny topór. <em><strong>1k6</strong></em> òbrażeniów</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Jagòdë</td>
-                        <td>5</td>
+                        <td id="item_5">5</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_5', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_5', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Miészk z lesnyma jagòdama do jedzeniégò</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Mańtel mniszczi</td>
-                        <td>1</td>
+                        <td id="item_6">1</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_6', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_6', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Cepłi òblëczënk. Òchrona przed zybã +1</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Krzôska</td>
-                        <td>1</td>
+                        <td id="item_7">1</td>
+                        <td>
+                            <button type="button" onclick="change_amount('item_7', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_7', 0)">- 1</button>
+                        </td>
                         <td style='text-align:left;'>Krzôska do rozpalaniégò ògnia</td>
                     </tr>
                 </tbody>
