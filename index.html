@@ -46,7 +46,7 @@
                         <tbody>
                             <tr>
                                 <td id="hp"></td>
-                                <td id="max_hp" style="color: green; font-size: large"><strong>10</strong></td>
+                                <td id="max_hp" style="color: green; font-size: large"><strong></strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -86,6 +86,7 @@
                             <tr>
                                 <th style='text-align:left;'><strong>Pòzwa</strong></th>
                                 <th><strong>Pùńktë</strong></th>
+                                <th><strong>+ / -</strong></th>
                                 <th><strong>Test</strong></th>
                             </tr>
                         </thead>
@@ -93,31 +94,55 @@
                             <tr>
                                 <td style='text-align:left;'>Bùdowa Cała</td>
                                 <td id="physique">5</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('physique', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('physique', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="physique-button" onclick="normal_test('physique')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kraft</td>
                                 <td id="strength">4</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('strength', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('strength', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="strength-button" onclick="normal_test('strength')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kòndicjô</td>
                                 <td id="stamina">5</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('stamina', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('stamina', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="stamina-button" onclick="normal_test('stamina')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Chùtkòsc</td>
                                 <td id="speed">8</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('speed', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('speed', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="speed-button" onclick="normal_test('speed')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Jintelekt</td>
                                 <td id="intelligence">10</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('intelligence', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('intelligence', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="intelligence-button" onclick="normal_test('intelligence')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Zrãcznosc</td>
                                 <td id="dexterity">8</td>
+                                <td>
+                                    <button type="button" onclick="change_amount('dexterity', 1)">+ 1</button>
+                                    <button type="button" onclick="change_amount('dexterity', 0)">- 1</button>
+                                </td>
                                 <td><button type="button" class="big-button" id="dexterity-button" onclick="normal_test('dexterity')">Szmërgnij knôblã</button></td>
                             </tr>
                         </tbody>
@@ -146,7 +171,6 @@
 
             <h3>Biôtka</h3>
             <div id='combat' style="display: flex; flex-wrap: nowrap; margin-right: 0.8em;">
-
                 <div style="margin-right: 0.8em;">
                     <div id="stats">
                         <h4>Statisticzi</h4>
@@ -233,13 +257,12 @@
                                     <button type="button" class="big-button" id="counter-attack-def" onclick="counter_attack_def()">Szmërgnij knôblã</button><br>
                                     <button type="button" class="big-button" id="counter-attack-dex" onclick="counter_attack_dex()">Szmërgnij knôblã</button>
                                 </td>
-                                
                             </tr>
                         </tbody>
                     </table>
                     <div>
                         <h4>Òbrażenia</h4>
-                        <button type="button" class="big-button" id="damage" onclick="damage()" style="height: 4em; width: 8em; font-size: larger; background-color: lightcoral;">Szmërgnij knôblã</button>
+                        <button type="button" class="combat-button" id="damage" onclick="damage()">Szmërgnij knôblã</button>
                     </div>
                 </div>
 
@@ -386,7 +409,7 @@
                     <tr>
                         <th style='text-align:left;'><strong>Zôklãcé</strong></th>
                         <th><strong>Kòszt mòcë</strong></th>
-                        <th><strong>Czarzë</strong></th>
+                        <th><strong>Próba czarzëniégò</strong></th>
                         <th><strong>Czas dzëjaniégò</strong></th>
                         <th style='text-align:left;'><strong>Òpis</strong></th>
                     </tr>
@@ -395,14 +418,14 @@
                     <tr>
                         <td style='text-align:left;'>Barch</td>
                         <td id="rage-spell-cost">5</td>
-                        <td id="rage-spell-button"></td>
+                        <td><button type="button" class="magic-button" id="rage-spell-button" onclick="cast_spell('rage-spell-button', 'rage-spell-cost')">Szmërgnij zôklãcé</button></td>
                         <td>3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna ajtakùjë nôblëższą pòstacëjã</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Pôcha krwi</td>
                         <td id="bloodlust-spell-cost">5</td>
-                        <td id="bloodlust-spell-button"></td>
+                        <td><button type="button" class="magic-button" id="bloodlust-spell-button" onclick="cast_spell('bloodlust-spell-button', 'bloodlust-spell-cost')">Szmërgnij zôklãcé</button></td>
                         <td>3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë</td>
                     </tr>

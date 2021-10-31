@@ -46,6 +46,25 @@ body {
     margin: 2px;
 }
 
+.combat-button {
+    border-color: coral;
+    margin: 2px;
+    height: 4em;
+    width: 8em;
+    font-size: larger;
+    background-color: lightcoral;
+}
+
+.magic-button {
+    background-color: mediumvioletred;
+    border-color: darkviolet;
+    font-size: medium;
+    margin: 2px;
+    height: 4em;
+    width: 10em;
+
+}
+
 .dice-button {
     background-color: floralwhite;
     border-color: dimgrey;

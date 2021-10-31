@@ -3,6 +3,7 @@ function load_max(what_id, max_id) {
 }
 
 function load_max_hp() {
+    document.getElementById('max_hp').innerText = parseInt(document.getElementById('stamina').innerText) + parseInt(document.getElementById('physique').innerText);
     load_max("hp", "max_hp");
 }
 
@@ -209,13 +210,13 @@ function fury_attack() {
 }
 
 function damage() {
-    let dmg_dices = document.getElementById("max-damage").innerText.split('k');
-    let dices_number, dices_points, modifier, dmg;
+    let dmg_dices = document.getElementById("max-damage").innerText.split("k");
+    let dices_number, dmg_points, dices_points, modifier, dmg = 0;
 
     dices_number = parseInt(dmg_dices[0]);
 
-    if (dmg_dices[1].includes('+')) {
-        var dmg_points = dmg_dices[1].split('+');
+    if (dmg_dices[1].includes("+")) {
+        dmg_points = dmg_dices[1].split("+");
         dices_points = parseInt(dmg_points[0]);
         modifier = parseInt(dmg_points[1]);
     } else {
@@ -224,12 +225,17 @@ function damage() {
     }
 
     for (let i = 0; i < dices_number; i++) {
-        dmg += throw_dice(dices_points);
+        dmg += parseInt(throw_dice(dices_points));
     }
 
-    document.getElementById("max-damage").innerText = dmg + modifier;
+    document.getElementById("damage").innerText = dmg + modifier;
 }
 
-function cast_spell(what_id, mana_cost) {
-
+function cast_spell(spell_button_id, mana_cost_id) {
+    if (parseInt(document.getElementById(mana_cost_id).innerText) <= parseInt(document.getElementById("mana").innerText)) {
+        document.getElementById(spell_button_id).innerText = "Czarzënié"
+        document.getElementById("mana").innerText = parseInt(document.getElementById("mana").innerText) - 5;
+    } else {
+        document.getElementById(spell_button_id).innerText = "Felëje Cë pùńktów mòcë!";
+    }
 }
