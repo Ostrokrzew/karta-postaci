@@ -3,261 +3,21 @@
 <html>
     <head>
         <title>Kôrta Pòstacjë</title>
-        <style>
-            table, th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-                text-align: center;
-                padding: 4px;
-            }
-            table {
-                border: 2px solid black;
-            }
-            thead {
-                font-size: large;
-                color: black;
-            }
-            h1 {
-                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-                color: deeppink;
-            }
-            h2 {
-                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-                color: crimson;
-            }
-            h3 {
-                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-                color: hotpink;
-            }
-            h4 {
-                text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-                color: hotpink;
-                font-size: large;
-            }
-            body {
-                background-color: rgba(119, 130, 155, 0.637);
-            }
-            .small-button {
-                background-color: aquamarine;
-                border-color: teal;
-                font-size: medium;
-                width: 56px;
-            }
-            .big-button {
-                background-color: aquamarine;
-                border-color: teal;
-                font-size: medium;
-                width: 144px;
-                margin: 2px;
-            }
-        </style>
-
-        <script type="text/javascript">
-            function load_max(what_id, max_id) {
-                document.getElementById(what_id).innerText = parseInt(document.getElementById(max_id).innerText);
-            }
-
-            function load_max_hp() {
-                load_max("hp", "max_hp");
-            }
-
-            function load_max_mana() {
-                load_max("mana", "max_mana");
-            }
-
-            function colorize(what_id, max_id) {
-                let points = document.getElementById(what_id).innerText;
-                if (points < 0.33 * parseInt(document.getElementById(max_id).innerText)) {
-                    document.getElementById(what_id).style.color = "red";
-                    document.getElementById(what_id).style.fontWeight = "bold";
-                } else if (points < 0.67 * parseInt(document.getElementById(max_id).innerText)) {
-                    document.getElementById(what_id).style.color = "orange";
-                } else {
-                    document.getElementById(what_id).style.color = "green";
-                }
-            }
-
-            function colorize_hp() {
-                colorize("hp", "max_hp");
-            }
-
-            function colorize_mana() {
-                colorize("mana", "max_mana");
-            }
-
-            function change_up_down(what_id, max_id, up) {
-                if (up) {
-                    if (parseInt(document.getElementById(what_id).innerText) < parseInt(document.getElementById(max_id).innerText))
-                    {
-                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) + 1;
-                    }
-                } else {
-                    if (parseInt(document.getElementById(what_id).innerText) > 0)
-                    {
-                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) - 1;
-                    }
-                }
-            }
-
-            function change_hp(up) {
-                change_up_down("hp", "max_hp", up);
-                colorize_hp();
-            }
-
-            function change_mana(up) {
-                change_up_down("mana", "max_mana", up);
-                colorize_mana();
-            }
-            
-            function change_sober_mind(up) {
-                if (up) {
-                    document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) + 1;
-                } else {
-                    if (parseInt(document.getElementById("sober-mind").innerText) > 0)
-                    {
-                        document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) - 1;
-                    }
-                }
-            }
-            
-            function change_amount(what_id, up) {
-                if (up) {
-                    document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) + 1;
-                } else {
-                    if (parseInt(document.getElementById(what_id).innerText) > 0)
-                    {
-                        document.getElementById(what_id).innerText = parseInt(document.getElementById(what_id).innerText) - 1;
-                    }
-                }
-            }
-            
-            function throw_dice(dice_size) {
-                var array = new Uint32Array(1);
-                window.crypto.getRandomValues(array);
-                return array[0] % dice_size + 1;
-            }
-            
-            function throw_d3(params) {
-                return throw_dice(3);
-            }
-            
-            function throw_d4(params) {
-                return throw_dice(4);
-            }
-            
-            function throw_d6(params) {
-                return throw_dice(6);
-            }
-            
-            function throw_d12(params) {
-                return throw_dice(12);
-            }
-            
-            function throw_d20(params) {
-                return throw_dice(20);
-            }
-            
-            function throw_d32(params) {
-                return throw_dice(32);
-            }
-            
-            function throw_d100(params) {
-                return throw_dice(100);
-            }
-
-            function colorize_test(test_button_id) {
-                let points = parseInt(document.getElementById(test_button_id).innerText);
-                if (points < 16) {
-                    document.getElementById(test_button_id).style.backgroundColor = "red";
-                } else if (points >= 29) {
-                    document.getElementById(test_button_id).style.backgroundColor = "gold";
-                } else {
-                    document.getElementById(test_button_id).style.backgroundColor = "green";
-                }
-            }
-
-            function normal_test(skill_id) {
-                let sum = throw_d32() + parseInt(document.getElementById(skill_id).innerText);
-                document.getElementById(skill_id + "-button").innerText = sum;
-                colorize_test(skill_id + "-button")
-            }
-
-            function penalty_test() {
-                let sum = Math.min(throw_d20(), throw_d20()) + throw_d12();
-                document.getElementById("no-skill-button").innerText = sum;
-                colorize_test("no-skill-button")
-            }
-
-            function premium_test(skill_id) {
-                let sum = Math.max(throw_d20(), throw_d20()) + throw_d12() + parseInt(document.getElementById(skill_id).innerText);
-                document.getElementById(skill_id + "-button").innerText = sum;
-                colorize_test(skill_id + "-button")
-            }
-
-            function normal_defence() {
-                let sum = throw_d32() + parseInt(document.getElementById("defence").innerText);
-                document.getElementById("normal-defence").innerText = sum;
-            }
-
-            function weak_defence() {
-                let sum = throw_d20() + parseInt(document.getElementById("defence").innerText);
-                document.getElementById("weak-defence").innerText = sum;
-            }
-
-            function very_weak_defence() {
-                let sum = throw_d12() + parseInt(document.getElementById("defence").innerText);
-                document.getElementById("very-weak-defence").innerText = sum;
-            }
-
-            function run_away_sm() {
-                normal_test('sober-mind');
-                document.getElementById("run-away-sm").innerText = document.getElementById("sober-mind-button").innerText;
-            }
-
-            function run_away_speed() {
-                normal_test('speed');
-                document.getElementById("run-away-speed").innerText = document.getElementById("speed-button").innerText;
-            }
-
-            function normal_attack() {
-                let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
-                document.getElementById("normal-attack").innerText = sum;
-            }
-
-            function counter_attack_off() {
-                normal_attack();
-                document.getElementById("counter-attack-off").innerText = document.getElementById("normal-attack").innerText;
-            }
-
-            function counter_attack_def() {
-                normal_defence();
-                document.getElementById("counter-attack-def").innerText = document.getElementById("normal-defence").innerText;
-            }
-
-            function counter_attack_dex() {
-                normal_test('dexterity');
-                document.getElementById("counter-attack-dex").innerText = document.getElementById("dexterity-button").innerText;
-            }
-
-            function double_attack() {
-                let sum = throw_d20() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
-                document.getElementById("double-attack").innerText = sum;
-            }
-
-            function fury_attack() {
-                let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("mod").innerText);
-                document.getElementById("normal-attack").innerText = sum;
-            }
-
-            function damage() {
-                document.getElementById("damage").innerText = throw_d6();
-            }
-
-        </script>
+        <script type="text/javascript" src="resources/scripts.js"></script>
+        <link rel="stylesheet" href="resources/styles.css">
+<!--        <link rel="icon" type="image/png" href="images">-->
     </head>
     <body onload="load_max_hp(), load_max_mana(), colorize_hp(), colorize_mana()">
-        <div>
-            <img src="./mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret" style="float: right">
+        <div style="float: right; text-align: center">
+            <img src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"><br>
+            <button type="button" class="dice-button" id="k3" onclick="document.getElementById('k3').innerText = throw_d3()">K3</button>
+            <button type="button" class="dice-button" id="k4" onclick="document.getElementById('k4').innerText = throw_d4()">K4</button>
+            <button type="button" class="dice-button" id="k6" onclick="document.getElementById('k6').innerText = throw_d6()">K6</button>
+            <button type="button" class="dice-button" id="k8" onclick="document.getElementById('k8').innerText = throw_d8()">K8</button><br>
+            <button type="button" class="dice-button" id="k12" onclick="document.getElementById('k12').innerText = throw_d12()">K12</button>
+            <button type="button" class="dice-button" id="k20" onclick="document.getElementById('k20').innerText = throw_d20()">K20</button>
+            <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
+            <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button>
         </div>
 
         <div id="info">
@@ -273,7 +33,7 @@
 
         <div id='characteristics'>
             <h2>Charakteristika</h2>
-            <div id="points" style="display: flex">
+            <div id="points" style="display: flex; flex-wrap: nowrap;">
                 <div id='health-points' style="margin-right: 8px">
                     <h3>Pùńktë Żëcégò</h3>
                     <table>
@@ -319,7 +79,7 @@
             </div>
 
             <h3>Przédné znanczi</h3>
-            <div id='abilities' style="display: flex">
+            <div id='abilities' style="display: flex; flex-wrap: nowrap;">
                 <div style="margin-right: 8px">
                     <table>
                         <thead>
@@ -385,9 +145,10 @@
             </div>
 
             <h3>Biôtka</h3>
-            <div id='combat' style="display: flex">
-                <div style="margin-right: 8px;">
-                    <div>
+            <div id='combat' style="display: flex; flex-wrap: nowrap; margin-right: 0.8em;">
+
+                <div style="margin-right: 0.8em;">
+                    <div id="stats">
                         <h4>Statisticzi</h4>
                         <table style="width: 100%">
                             <thead>
@@ -404,13 +165,46 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id='weapons-knowledge'>
+                        <h4>Rozmiałosc broni</h4>
+                        <table style="width: 100%; height: 64%">
+                            <thead>
+                            <tr>
+                                <th><strong>Niwizna</strong></th>
+                                <th><strong>Kategòriô</strong></th>
+                                <th><strong>Mòdifikatór atakù</strong></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td id="known-weapon-level">5</td>
+                                <td id="known-weapon-category">II</td>
+                                <td id="known-weapon-modificator">+1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
-                        <h4>Òbrażenia</h4>
-                        <button type="button" class="big-button" id="damage" onclick="damage()" style="height: 64px; font-size: larger; background-color: lightcoral;">Szmërgnij knôblã</button>
+                        <h4>Brëkòwónô broń</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td><strong>Pòzwa</strong></td>
+                                    <td><strong>Knôbel òbrażeniów</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="weapon">Topór</td>
+                                    <td id="max-damage">1k6</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
 
-                <div style="margin-right: 8px">
+                <div style="margin-right: 0.8em">
                     <h4>Atakòwanié</h4>
                     <table>
                         <thead>
@@ -443,9 +237,13 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div>
+                        <h4>Òbrażenia</h4>
+                        <button type="button" class="big-button" id="damage" onclick="damage()" style="height: 4em; width: 8em; font-size: larger; background-color: lightcoral;">Szmërgnij knôblã</button>
+                    </div>
                 </div>
 
-                <div style="margin-right: 8px">
+                <div style="margin-right: 0.8em;">
                     <h4>Bronienié sã</h4>
                     <table>
                         <thead>
@@ -480,8 +278,8 @@
             </div>
 
             <h3>Trimë</h3>
-            <div id="skills" style="display: flex;">
-                <div id='skills-generic' style="margin-right: 8px">
+            <div id="skills" style="display: flex; flex-wrap: nowrap; margin-right: 0.8em;">
+                <div id='skills-generic' style="margin-right: 0.8em;">
                     <h4>Òglowé trimë</h4>
                     <table>
                         <thead>
@@ -550,7 +348,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id='skills-detail' style="margin-right: 8px">
+                <div id='skills-detail' style="margin-right: 0.8em;">
                     <h4>Drobnotowé trimë</h4>
                     <table>
                         <thead>
@@ -569,30 +367,17 @@
                         </tbody>
                     </table>
                 </div>
-                <div id='skills-empty' style="margin-right: 8px">
+                <div id='skills-empty' style="margin-right: 0.8em;">
                     <h4>Felëjącé trimë</h4>
-                    <button type="button" class="big-button" id="no-skill-button" onclick="penalty_test('no-skill')">Szmërgnij knôblã</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td><button type="button" class="big-button" id="no-skill-button" onclick="penalty_test('no-skill')">Szmërgnij knôblã</button></td>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-
-            <h3 id='weapons-knowledge'>Rozmiałosc broni</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th><strong>Niwizna</strong></th>
-                        <th><strong>Kategòriô</strong></th>
-                        <th><strong>Mòdifikatór atakù</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="known-weapon-level">5</td>
-                        <td id="known-weapon-category">II</td>
-                        <td id="known-weapon-modificator">+1</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
         <div id='magic'>
             <h2>Czarë</h2>
@@ -601,6 +386,7 @@
                     <tr>
                         <th style='text-align:left;'><strong>Zôklãcé</strong></th>
                         <th><strong>Kòszt mòcë</strong></th>
+                        <th><strong>Czarzë</strong></th>
                         <th><strong>Czas dzëjaniégò</strong></th>
                         <th style='text-align:left;'><strong>Òpis</strong></th>
                     </tr>
@@ -608,13 +394,15 @@
                 <tbody>
                     <tr>
                         <td style='text-align:left;'>Barch</td>
-                        <td>5</td>
+                        <td id="rage-spell-cost">5</td>
+                        <td id="rage-spell-button"></td>
                         <td>3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna ajtakùjë nôblëższą pòstacëjã</td>
                     </tr>
                     <tr>
                         <td style='text-align:left;'>Pôcha krwi</td>
-                        <td>5</td>
+                        <td id="bloodlust-spell-cost">5</td>
+                        <td id="bloodlust-spell-button"></td>
                         <td>3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë</td>
                     </tr>

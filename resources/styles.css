@@ -1,0 +1,56 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
+}
+table {
+    border: 2px solid black;
+}
+thead {
+    font-size: large;
+    color: black;
+}
+h1 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: deeppink;
+}
+h2 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: crimson;
+}
+h3 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: hotpink;
+}
+h4 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: hotpink;
+    font-size: large;
+}
+body {
+    background-color: rgba(119, 130, 155, 0.637);
+}
+.small-button {
+    background-color: aquamarine;
+    border-color: teal;
+    font-size: medium;
+    width: 56px;
+}
+
+.big-button {
+    background-color: aquamarine;
+    border-color: teal;
+    font-size: medium;
+    width: 144px;
+    margin: 2px;
+}
+
+.dice-button {
+    background-color: floralwhite;
+    border-color: dimgrey;
+    font-size: medium;
+    width: 64px;
+    height: 64px;
+    margin: 2px;
+}
