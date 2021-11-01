@@ -3,23 +3,112 @@ function load_max(what_id, max_id) {
 }
 
 function load_max_hp() {
-    document.getElementById('max_hp').innerText = parseInt(document.getElementById('stamina').innerText) + parseInt(document.getElementById('physique').innerText);
-    load_max("hp", "max_hp");
+    document.getElementById('max-hp').innerText = parseInt(document.getElementById('stamina').innerText) + parseInt(document.getElementById('physique').innerText);
+    load_max("hp", "max-hp");
 }
 
 function load_max_mana() {
-    load_max("mana", "max_mana");
+    load_max("mana", "max-mana");
 }
 
-// function save_to_cache() {
-//     localStorage.setItem("name", "Ifigeniô");
-//     console.log("name saved");
-// }
-//
-// async function load_from_cache() {
-//     document.getElementById("name").innerText = "Miono: " + localStorage.getItem("name");
-//     console.log("name loaded");
-// }
+function save_to_cache() {
+    const data_info = (
+        {
+            "name": document.getElementById("name").innerText,
+            "race": document.getElementById("race").innerText,
+            "profession": document.getElementById("profession").innerText,
+            "biography": document.getElementById("biography").innerText,
+            "max-hp": document.getElementById("max-hp").innerText,
+            "max-mana": document.getElementById("max-mana").innerText
+        }
+        );
+    localStorage.setItem("data", JSON.stringify(data_info));
+    console.log("data saved");
+}
+
+function load_from_cache() {
+    const json_obj = JSON.parse(localStorage.getItem("data"));
+    for (const id in json_obj) {
+        document.getElementById(id).innerText = json_obj[id];
+    }
+    console.log("data loaded");
+}
+
+async function save_changes() {
+    let module = await import('https://cdn.skypack.dev/@octokit/rest');
+
+    const octokit = new module.Octokit({auth: "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"});
+
+    let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        ref: 'heads/after-game',
+    });
+    console.log(ref_response);
+
+    let last_commit_response = await octokit.request('GET ' + ref_response.data.url, {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        commit_sha: ref_response.data.object.sha,
+    });
+    console.log(last_commit_response);
+
+    let fetch_response = await fetch('resources/info.json');
+    let info_text = await fetch_response.text();
+
+    let head_response = await octokit.request('GET ' + last_commit_response.data.object.url + '?recursive=1', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        content: info_text,
+    });
+    console.log(head_response);
+
+    let blob_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/git/blobs', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        content: info_text,
+        encoding: 'utf-8'
+    });
+    console.log(blob_response);
+
+    let tree_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/git/trees', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        base_tree: head_response.data.tree.sha,
+        tree: [{
+            path: 'resources/info.json',
+            mode: '100644',
+            type: 'blob',
+            content: info_text
+        }],
+        author: {name: 'Ostrokrzew', email: 'ostrokrzew@protonmail.com'}
+    });
+    console.log(tree_response);
+
+    let new_commit_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/git/commits', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        message: 'commit after game',
+        parents: [head_response.data.sha],
+        tree: tree_response.data.sha,
+        author: {name: 'Ostrokrzew', email: 'ostrokrzew@protonmail.com'}
+    });
+    console.log(new_commit_response);
+
+    let ref_update_response = await octokit.request('PATCH /repos/Ostrokrzew/karta-postaci/git/refs/heads/after-game', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        ref: 'heads/after-game',
+        sha: new_commit_response.data.sha,
+    });
+    console.log(ref_update_response);
+}
+
+function load_all() {
+    load_max_hp();
+    load_max_mana();
+    load_from_cache();
+}
 
 function colorize(what_id, max_id) {
     let points = document.getElementById(what_id).innerText;
@@ -34,11 +123,11 @@ function colorize(what_id, max_id) {
 }
 
 function colorize_hp() {
-    colorize("hp", "max_hp");
+    colorize("hp", "max-hp");
 }
 
 function colorize_mana() {
-    colorize("mana", "max_mana");
+    colorize("mana", "max-mana");
 }
 
 function change_up_down(what_id, max_id, up) {
@@ -56,12 +145,12 @@ function change_up_down(what_id, max_id, up) {
 }
 
 function change_hp(up) {
-    change_up_down("hp", "max_hp", up);
+    change_up_down("hp", "max-hp", up);
     colorize_hp();
 }
 
 function change_mana(up) {
-    change_up_down("mana", "max_mana", up);
+    change_up_down("mana", "max-mana", up);
     colorize_mana();
 }
 
