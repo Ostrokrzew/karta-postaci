@@ -99,7 +99,6 @@ async function create_pull_request(title = '') {
         repo: 'karta-postaci',
         ref: 'heads/after-game',
         sha: new_commit_response.data.sha,
-        force: true
     });
     console.log(ref_update_response);
 
