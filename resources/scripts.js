@@ -34,8 +34,9 @@ function load_from_cache() {
     console.log("data loaded");
 }
 
-async function save_changes() {
+async function save_changes(changes_json) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
+    let info_text = JSON.stringify(changes_json);
 
     const octokit = new module.Octokit({auth: "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"});
 
@@ -52,9 +53,6 @@ async function save_changes() {
         commit_sha: ref_response.data.object.sha,
     });
     console.log(last_commit_response);
-
-    let fetch_response = await fetch('resources/info.json');
-    let info_text = await fetch_response.text();
 
     let head_response = await octokit.request('GET ' + last_commit_response.data.object.url + '?recursive=1', {
         owner: 'Ostrokrzew',
