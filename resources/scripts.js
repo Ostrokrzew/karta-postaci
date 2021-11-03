@@ -34,19 +34,25 @@ function load_from_cache() {
     console.log("data loaded");
 }
 
-async function save_changes(changes_json) {
+async function commit_changes(changes_json) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
     let info_text = JSON.stringify(changes_json);
-    let token = prompt('Enter GitHub access token');
+    let token = localStorage.getItem('token');
+    if (!token) {
+        token = prompt('Enter GitHub access token');
+        localStorage.setItem('token', token);
+    }
     const octokit = new module.Octokit({auth: token});
 
+    // get current master's head
     let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
-        ref: 'heads/after-game',
+        ref: 'heads/master',
     });
     console.log(ref_response);
 
+    // get head's commit hash
     let last_commit_response = await octokit.request('GET ' + ref_response.data.url, {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
@@ -54,6 +60,7 @@ async function save_changes(changes_json) {
     });
     console.log(last_commit_response);
 
+    // get more detailed info about head's last commit
     let head_response = await octokit.request('GET ' + last_commit_response.data.object.url + '?recursive=1', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
@@ -114,6 +121,9 @@ function load_all() {
     load_max_hp();
     load_max_mana();
     load_from_cache();
+}
+
+function save() {
     let changes_json = JSON.parse('{ \
         "name": "Miono: Ifigeniô", \
         "race": "Rasa: Bòrówcka z Ôstu", \
@@ -123,7 +133,7 @@ function load_all() {
         "max-mana": "10", \
         "physique": "5" \
         }');
-    save_changes(changes_json);
+    commit_changes(changes_json);
 }
 
 function colorize(what_id, max_id) {
