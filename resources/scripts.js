@@ -37,8 +37,8 @@ function load_from_cache() {
 async function save_changes(changes_json) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
     let info_text = JSON.stringify(changes_json);
-
-    const octokit = new module.Octokit({auth: "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"});
+    let token = prompt('Enter GitHub access token');
+    const octokit = new module.Octokit({auth: token});
 
     let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
         owner: 'Ostrokrzew',
@@ -65,7 +65,6 @@ async function save_changes(changes_json) {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
         content: info_text,
-        encoding: 'utf-8'
     });
     console.log(blob_response);
 
@@ -100,12 +99,31 @@ async function save_changes(changes_json) {
         sha: new_commit_response.data.sha,
     });
     console.log(ref_update_response);
+
+    let pr_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/pulls', {
+        owner: 'Ostrokrzew',
+        repo: 'karta-postaci',
+        title: 'After game',
+        head: 'after-game',
+        base: 'master',
+    });
+    console.log(pr_response);
 }
 
 function load_all() {
     load_max_hp();
     load_max_mana();
     load_from_cache();
+    let changes_json = JSON.parse('{ \
+        "name": "Miono: Ifigeniô", \
+        "race": "Rasa: Bòrówcka z Ôstu", \
+        "profession": "Wark: Mniszka", \
+        "biography": "Plac na biografiã", \
+        "max-hp": "10", \
+        "max-mana": "10", \
+        "physique": "5" \
+        }');
+    save_changes(changes_json);
 }
 
 function colorize(what_id, max_id) {
