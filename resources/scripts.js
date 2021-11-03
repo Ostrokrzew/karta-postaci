@@ -124,15 +124,24 @@ function load_all() {
 }
 
 function save() {
-    let changes_json = JSON.parse('{ \
-        "name": "Miono: Ifigeniô", \
-        "race": "Rasa: Bòrówcka z Ôstu", \
-        "profession": "Wark: Mniszka", \
-        "biography": "Plac na biografiã", \
-        "max-hp": "10", \
-        "max-mana": "10", \
-        "physique": "5" \
-        }');
+    let changes_json = {
+        "name": document.getElementById("name").innerText,
+        "race": document.getElementById("race").innerText,
+        "profession": document.getElementById("profession").innerText,
+        "biography": document.getElementById("biography").innerText,
+        "max-hp": document.getElementById("max-hp").innerText,
+        "max-mana": document.getElementById("max-mana").innerText,
+        "physique": document.getElementById("physique").innerText,
+        "strength": document.getElementById("strength").innerText,
+        "stamina": document.getElementById("stamina").innerText,
+        "speed": document.getElementById("speed").innerText,
+        "intelligence": document.getElementById("intelligence").innerText,
+        "dexterity": document.getElementById("dexterity").innerText,
+        "sober-mind": document.getElementById("sober-mind").innerText,
+        "known-weapon-level": document.getElementById("known-weapon-level").innerText,
+        "weapon": document.getElementById("weapon").innerText,
+        "weapon-damage": document.getElementById("weapon-damage").innerText,
+    }
     commit_changes(changes_json);
 }
 
@@ -325,7 +334,7 @@ function fury_attack() {
 }
 
 function damage() {
-    let dmg_dices = document.getElementById("max-damage").innerText.split("k");
+    let dmg_dices = document.getElementById("weapon-damage").innerText.split("k");
     let dices_number, dmg_points, dices_points, modifier, dmg = 0;
 
     dices_number = parseInt(dmg_dices[0]);
@@ -334,6 +343,10 @@ function damage() {
         dmg_points = dmg_dices[1].split("+");
         dices_points = parseInt(dmg_points[0]);
         modifier = parseInt(dmg_points[1]);
+    } else if (dmg_dices[1].includes("-")) {
+        dmg_points = dmg_dices[1].split("-");
+        dices_points = parseInt(dmg_points[0]);
+        modifier = parseInt(-dmg_points[1]);
     } else {
         dices_points = parseInt(dmg_dices[1]);
         modifier = 0;
