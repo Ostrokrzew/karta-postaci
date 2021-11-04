@@ -9,7 +9,7 @@
     </head>
     <body onload="load_all(), colorize_hp(), colorize_mana()">
         <div style="float: right; text-align: center">
-            <img src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"><br>
+            <img id="portrait" src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"><br>
             <button type="button" class="dice-button" id="k3" onclick="document.getElementById('k3').innerText = throw_d3()">K3</button>
             <button type="button" class="dice-button" id="k4" onclick="document.getElementById('k4').innerText = throw_d4()">K4</button>
             <button type="button" class="dice-button" id="k6" onclick="document.getElementById('k6').innerText = throw_d6()">K6</button>
@@ -18,6 +18,7 @@
             <button type="button" class="dice-button" id="k20" onclick="document.getElementById('k20').innerText = throw_d20()">K20</button>
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
+            <button type="submit" id="save_local" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
             <button type="submit" id="save" onclick="save()">SAVE CHANGES</button>
         </div>
 
@@ -200,7 +201,7 @@
                             <tbody>
                             <tr>
                                 <td id="known-weapon-level">5</td>
-                                <td id="known-weapon-category">II</td>
+                                <td id="known-weapon-category">2</td>
                                 <td id="known-weapon-modificator">+1</td>
                             </tr>
                             </tbody>
@@ -212,12 +213,14 @@
                             <thead>
                                 <tr>
                                     <td><strong>Pòzwa</strong></td>
+                                    <td><strong>Kategòriô</strong></td>
                                     <td><strong>Knôbel òbrażeniów</strong></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td id="weapon">Topór</td>
+                                    <td id="weapon-category">2</td>
                                     <td id="weapon-damage">1k6</td>
                                 </tr>
                             </tbody>
@@ -323,8 +326,8 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kamùflôż</td>
-                                <td id="hide">3</td>
-                                <td><button type="button" class="big-button" id="hide-button" onclick="normal_test('hide')">Szmërgnij knôblã</button></td>
+                                <td id="hiding">3</td>
+                                <td><button type="button" class="big-button" id="hiding-button" onclick="normal_test('hiding')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Znajemnosc nôtërë</td>
@@ -413,18 +416,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style='text-align:left;'>Barch</td>
+                    <tr id="rage">
+                        <td id="rage-spell" style='text-align:left;'>Barch</td>
                         <td id="rage-spell-cost">5</td>
                         <td><button type="button" class="magic-button" id="rage-spell-button" onclick="cast_spell('rage-spell-button', 'rage-spell-cost')">Szmërgnij zôklãcé</button></td>
-                        <td>3 ruńdë</td>
+                        <td id="rage-spell-duration">3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna ajtakùjë nôblëższą pòstacëjã</td>
                     </tr>
-                    <tr>
-                        <td style='text-align:left;'>Pôcha krwi</td>
+                    <tr id="bloodlust">
+                        <td id="bloodlust-spell" style='text-align:left;'>Pôcha krwi</td>
                         <td id="bloodlust-spell-cost">5</td>
                         <td><button type="button" class="magic-button" id="bloodlust-spell-button" onclick="cast_spell('bloodlust-spell-button', 'bloodlust-spell-cost')">Szmërgnij zôklãcé</button></td>
-                        <td>3 ruńdë</td>
+                        <td id="bloodlust-spell-duration">3 ruńdë</td>
                         <td style='text-align:left;'>Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë</td>
                     </tr>
                 </tbody>

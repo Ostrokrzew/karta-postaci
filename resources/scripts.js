@@ -11,19 +11,64 @@ function load_max_mana() {
     load_max("mana", "max-mana");
 }
 
+function load_current_data() {
+    const data = {
+        // info
+        "name": document.getElementById("name").innerText,
+        "race": document.getElementById("race").innerText,
+        "profession": document.getElementById("profession").innerText,
+        "biography": document.getElementById("biography").innerText,
+        "portrait": document.getElementById("portrait").src,
+        // main stats
+        "max-hp": document.getElementById("max-hp").innerText,
+        "max-mana": document.getElementById("max-mana").innerText,
+        "physique": document.getElementById("physique").innerText,
+        "strength": document.getElementById("strength").innerText,
+        "stamina": document.getElementById("stamina").innerText,
+        "speed": document.getElementById("speed").innerText,
+        "intelligence": document.getElementById("intelligence").innerText,
+        "dexterity": document.getElementById("dexterity").innerText,
+        "sober-mind": document.getElementById("sober-mind").innerText,
+        // combat
+        "attack": document.getElementById("attack").innerText,
+        "defence": document.getElementById("defence").innerText,
+        "known-weapon-level": document.getElementById("known-weapon-level").innerText,
+        "weapon": document.getElementById("weapon").innerText,
+        "weapon-damage": document.getElementById("weapon-damage").innerText,
+        // skills
+        "sneak": document.getElementById("sneak").innerText,
+        "poetry": document.getElementById("poetry").innerText,
+        "hiding": document.getElementById("hiding").innerText,
+        "nature-knowledge": document.getElementById("nature-knowledge").innerText,
+        "alchemy": document.getElementById("alchemy").innerText,
+        "black-magic": document.getElementById("black-magic").innerText,
+        "metal-processing": document.getElementById("metal-processing").innerText,
+        "stone-processing": document.getElementById("stone-processing").innerText,
+        "wood-processing": document.getElementById("wood-processing").innerText,
+        "cults-knowledge": document.getElementById("cults-knowledge").innerText,
+        "medium": document.getElementById("medium").innerText,
+        "throw-vial": document.getElementById("throw-vial").innerText,
+        // magic
+        "rage-spell": document.getElementById("bloodlust").innerText,
+        "rage-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
+        "rage-spell-duration": document.getElementById("bloodlust-spell-cost").innerText,
+        "bloodlust-spell": document.getElementById("bloodlust").innerText,
+        "bloodlust-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
+        "bloodlust-spell-duration": document.getElementById("bloodlust-spell-cost").innerText,
+        // equipment
+    }
+    return data;
+}
+
 function save_to_cache() {
-    const data_info = (
-        {
-            "name": document.getElementById("name").innerText,
-            "race": document.getElementById("race").innerText,
-            "profession": document.getElementById("profession").innerText,
-            "biography": document.getElementById("biography").innerText,
-            "max-hp": document.getElementById("max-hp").innerText,
-            "max-mana": document.getElementById("max-mana").innerText
-        }
-        );
-    localStorage.setItem("data", JSON.stringify(data_info));
-    console.log("data saved");
+    try {
+        localStorage.setItem("data", JSON.stringify(load_current_data()));
+        console.log("data saved");
+    } catch (QuotaExceededError) {
+        console.log("data cannot be saved");
+    } finally {
+        console.log("saved data: " + localStorage.getItem("data"));
+    }
 }
 
 function load_from_cache() {
@@ -48,7 +93,7 @@ async function commit_changes(changes_json) {
     let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
-        ref: 'heads/master',
+        ref: 'heads/after-game',
     });
     console.log(ref_response);
 
@@ -124,25 +169,7 @@ function load_all() {
 }
 
 function save() {
-    let changes_json = {
-        "name": document.getElementById("name").innerText,
-        "race": document.getElementById("race").innerText,
-        "profession": document.getElementById("profession").innerText,
-        "biography": document.getElementById("biography").innerText,
-        "max-hp": document.getElementById("max-hp").innerText,
-        "max-mana": document.getElementById("max-mana").innerText,
-        "physique": document.getElementById("physique").innerText,
-        "strength": document.getElementById("strength").innerText,
-        "stamina": document.getElementById("stamina").innerText,
-        "speed": document.getElementById("speed").innerText,
-        "intelligence": document.getElementById("intelligence").innerText,
-        "dexterity": document.getElementById("dexterity").innerText,
-        "sober-mind": document.getElementById("sober-mind").innerText,
-        "known-weapon-level": document.getElementById("known-weapon-level").innerText,
-        "weapon": document.getElementById("weapon").innerText,
-        "weapon-damage": document.getElementById("weapon-damage").innerText,
-    }
-    commit_changes(changes_json);
+    commit_changes(load_current_data());
 }
 
 function colorize(what_id, max_id) {
