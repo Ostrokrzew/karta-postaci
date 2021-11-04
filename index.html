@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="resources/styles.css">
 <!--        <link rel="icon" type="image/png" href="images">-->
     </head>
-    <body onload="load_all(), colorize_hp(), colorize_mana()">
+    <body onload="init_site()">
         <div style="float: right; text-align: center">
             <img id="portrait" src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"><br>
             <button type="button" class="dice-button" id="k3" onclick="document.getElementById('k3').innerText = throw_d3()">K3</button>
@@ -19,6 +19,7 @@
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
             <button type="submit" id="save_local" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
+            <button type="submit" id="load_local" onclick="load_from_cache()">LOAD LOCAL CHANGES</button>
             <button type="submit" id="save" onclick="save()">SAVE CHANGES</button>
         </div>
 

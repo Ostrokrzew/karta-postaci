@@ -2,12 +2,12 @@ function load_max(what_id, max_id) {
     document.getElementById(what_id).innerText = parseInt(document.getElementById(max_id).innerText);
 }
 
-function load_max_hp() {
+function reload_hp() {
     document.getElementById('max-hp').innerText = parseInt(document.getElementById('stamina').innerText) + parseInt(document.getElementById('physique').innerText);
     load_max("hp", "max-hp");
 }
 
-function load_max_mana() {
+function reload_mana() {
     load_max("mana", "max-mana");
 }
 
@@ -49,12 +49,12 @@ function load_current_data() {
         "medium": document.getElementById("medium").innerText,
         "throw-vial": document.getElementById("throw-vial").innerText,
         // magic
-        "rage-spell": document.getElementById("bloodlust").innerText,
-        "rage-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
-        "rage-spell-duration": document.getElementById("bloodlust-spell-cost").innerText,
-        "bloodlust-spell": document.getElementById("bloodlust").innerText,
+        "rage-spell": document.getElementById("rage-spell").innerText,
+        "rage-spell-cost": document.getElementById("rage-spell-cost").innerText,
+        "rage-spell-duration": document.getElementById("rage-spell-duration").innerText,
+        "bloodlust-spell": document.getElementById("bloodlust-spell").innerText,
         "bloodlust-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
-        "bloodlust-spell-duration": document.getElementById("bloodlust-spell-cost").innerText,
+        "bloodlust-spell-duration": document.getElementById("bloodlust-spell-duration").innerText,
         // equipment
     }
     return data;
@@ -62,7 +62,7 @@ function load_current_data() {
 
 function save_to_cache() {
     try {
-        localStorage.setItem("data", JSON.stringify(load_current_data()));
+        localStorage.setItem("data", JSON.stringify(load_current_data(), null, 4));
         console.log("data saved");
     } catch (QuotaExceededError) {
         console.log("data cannot be saved");
@@ -81,15 +81,17 @@ function load_from_cache() {
 
 async function commit_changes(changes_json) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
-    let info_text = JSON.stringify(changes_json);
+
+    let info_text = JSON.stringify(changes_json, null, 4);
     let token = localStorage.getItem('token');
     if (!token) {
         token = prompt('Enter GitHub access token');
         localStorage.setItem('token', token);
     }
+
     const octokit = new module.Octokit({auth: token});
 
-    // get current master's head
+    // get current head
     let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
@@ -162,14 +164,19 @@ async function commit_changes(changes_json) {
     console.log(pr_response);
 }
 
-function load_all() {
-    load_max_hp();
-    load_max_mana();
-    load_from_cache();
-}
-
 function save() {
     commit_changes(load_current_data());
+}
+
+async function load() {
+    let json = await fetch('resources/info.json');
+    let json_text = await json.text();
+    console.log(json_text);
+    const json_obj = JSON.parse(json_text);
+    for (const id in json_obj) {
+        document.getElementById(id).innerText = json_obj[id];
+    }
+    console.log("data loaded");
 }
 
 function colorize(what_id, max_id) {
@@ -191,6 +198,19 @@ function colorize_hp() {
 function colorize_mana() {
     colorize("mana", "max-mana");
 }
+
+function load_all() {
+    load();
+    reload_hp();
+    reload_mana();
+}
+
+function init_site() {
+    load_all();
+    colorize_hp();
+    colorize_mana();
+}
+
 
 function change_up_down(what_id, max_id, up) {
     if (up) {
@@ -391,6 +411,6 @@ function cast_spell(spell_button_id, mana_cost_id) {
         document.getElementById(spell_button_id).innerText = "Czarzënié"
         document.getElementById("mana").innerText = parseInt(document.getElementById("mana").innerText) - 5;
     } else {
-        document.getElementById(spell_button_id).innerText = "Felëje Cë pùńktów mòcë!";
+        document.getElementById(spell_button_id).innerText = "Felëje pùńktów mòcë!";
     }
 }
