@@ -1,8 +1,1 @@
-{
-  "name": "Ifigeniô",
-  "race": "Bòrówcka z Ôstu",
-  "profession": "Mniszka",
-  "biography": "Plac na biografiã",
-  "max-hp": "10",
-  "max-mana": "10"
-}
+{"name":"Ifigeniô","race":"Bòrówcka z Ôstu","profession":"Mniszka","biography":"Plac na biografiã","portrait":"http://localhost:63342/scratch.md/images/mniszka_s.jpg","max-hp":"10","max-mana":"10","physique":"5","strength":"4","stamina":"5","speed":"8","intelligence":"10","dexterity":"8","sober-mind":"6","attack":"8","defence":"2","known-weapon-level":"5","weapon":"Topór","weapon-damage":"1k6","sneak":"3","poetry":"6","hiding":"3","nature-knowledge":"8","alchemy":"9","black-magic":"11","metal-processing":"1","stone-processing":"1","wood-processing":"1","cults-knowledge":"4","medium":"5","throw-vial":"1","rage-spell":"Pôcha krwi 5 Szmërgnij zôklãcé 3 ruńdë Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë\t5\tSzmërgnij zôklãcé\t5\tZaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë","rage-spell-cost":"5","rage-spell-duration":"5","bloodlust-spell":"Pôcha krwi 5 Szmërgnij zôklãcé 3 ruńdë Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë 5 Szmërgnij zôklãcé 5 Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë\t5\tSzmërgnij zôklãcé\t5\tZaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë","bloodlust-spell-cost":"5","bloodlust-spell-duration":"5"}
