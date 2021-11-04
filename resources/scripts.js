@@ -67,7 +67,7 @@ function save_to_cache() {
     } catch (QuotaExceededError) {
         console.log("data cannot be saved");
     } finally {
-        console.log("saved data: " + localStorage.getItem("data"));
+        console.log("data: " + localStorage.getItem("data"));
     }
 }
 
@@ -76,7 +76,7 @@ function load_from_cache() {
     for (const id in json_obj) {
         document.getElementById(id).innerText = json_obj[id];
     }
-    console.log("data loaded");
+    console.log("cached data loaded");
 }
 
 async function commit_changes(changes_json) {
@@ -166,6 +166,7 @@ async function commit_changes(changes_json) {
 
 function save() {
     commit_changes(load_current_data());
+    console.log("saved data: " + localStorage.getItem("data"));
 }
 
 async function load() {
@@ -199,18 +200,18 @@ function colorize_mana() {
     colorize("mana", "max-mana");
 }
 
-function load_all() {
-    load();
+async function load_all() {
+    await load();
+    weapon_knowledge_arithmetic();
     reload_hp();
     reload_mana();
 }
 
-function init_site() {
-    load_all();
+async function init_site() {
+    await load_all();
     colorize_hp();
     colorize_mana();
 }
-
 
 function change_up_down(what_id, max_id, up) {
     if (up) {
@@ -259,7 +260,7 @@ function change_amount(what_id, up) {
 }
 
 function throw_dice(dice_size) {
-    var array = new Uint32Array(1);
+    let array = new Uint32Array(1);
     window.crypto.getRandomValues(array);
     return array[0] % dice_size + 1;
 }
@@ -413,4 +414,11 @@ function cast_spell(spell_button_id, mana_cost_id) {
     } else {
         document.getElementById(spell_button_id).innerText = "Felëje pùńktów mòcë!";
     }
+}
+
+function weapon_knowledge_arithmetic() {
+    let category = Math.ceil(parseInt(document.getElementById("known-weapon-level").innerText) / 5);
+    console.log(category);
+    document.getElementById("known-weapon-category").innerText = category;
+
 }

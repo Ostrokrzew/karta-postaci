@@ -73,3 +73,7 @@ body {
     height: 64px;
     margin: 2px;
 }
+
+.editor-mode {
+    display: none;
+}
