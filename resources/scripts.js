@@ -157,7 +157,7 @@ async function commit_changes(changes_json) {
     let pr_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/pulls', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
-        title: 'After game',
+        title: 'After game ' + Date.now(),
         head: 'after-game',
         base: 'master',
     });
