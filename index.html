@@ -225,12 +225,12 @@
                                 <td>
                                     <dev id="known-weapon-level"></dev><br>
                                     <dev class="editor-mode">
-                                        <button type="button" onclick="change_amount('known-weapon-level', 1)">+ 1</button>
-                                        <button type="button" onclick="change_amount('known-weapon-level', 0)">- 1</button>
+                                        <button type="button" onclick="change_weapon_knowledge(1)">+ 1</button>
+                                        <button type="button" onclick="change_weapon_knowledge(0)">- 1</button>
                                     </dev>
                                 </td>
-                                <td id="known-weapon-category">2</td>
-                                <td id="known-weapon-modificator">+1</td>
+                                <td id="known-weapon-category"></td>
+                                <td id="known-weapon-modifier"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -240,9 +240,10 @@
                         <table style="width: 100%">
                             <thead>
                                 <tr>
-                                    <td><strong>Pòzwa</strong></td>
-                                    <td><strong>Kategòriô</strong></td>
-                                    <td><strong>Knôbel òbrażeniów</strong></td>
+                                    <th><strong>Pòzwa</strong></th>
+                                    <th><strong>Kategòriô</strong></th>
+                                    <th><strong>Knôbel òbrażeniów</strong></th>
+                                    <th style="display: none"><strong>Mòdifikatór atakù</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -250,6 +251,7 @@
                                     <td id="weapon">Topór</td>
                                     <td id="weapon-category">2</td>
                                     <td id="weapon-damage">1k6</td>
+                                    <td id="weapon-modifier" style="display: none"></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -202,7 +202,7 @@ function colorize_mana() {
 
 async function load_all() {
     await load();
-    weapon_knowledge_arithmetic();
+    weapon_arithmetic();
     reload_hp();
     reload_mana();
 }
@@ -238,13 +238,37 @@ function change_mana(up) {
 }
 
 function change_sober_mind(up) {
+    let current_sober_mind = parseInt(document.getElementById("sober-mind").innerText);
     if (up) {
-        document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) + 1;
+        document.getElementById("sober-mind").innerText = current_sober_mind + 1;
     } else {
         if (parseInt(document.getElementById("sober-mind").innerText) > 0)
         {
-            document.getElementById("sober-mind").innerText = parseInt(document.getElementById("sober-mind").innerText) - 1;
+            document.getElementById("sober-mind").innerText = current_sober_mind - 1;
         }
+    }
+    if (current_sober_mind >= 5 && parseInt(document.getElementById("sober-mind").innerText) < 5) {
+        sober_mind_arithmetic(1);
+    } else if (current_sober_mind < 5 && parseInt(document.getElementById("sober-mind").innerText) >= 5) {
+        sober_mind_arithmetic(0);
+    }
+}
+
+function sober_mind_arithmetic(penalty) {
+    if (penalty) {
+        change_amount('physique', 0);
+        change_amount('strength', 0);
+        change_amount('stamina', 0);
+        change_amount('speed', 0);
+        change_amount('intelligence', 0);
+        change_amount('dexterity', 0);
+    } else {
+        change_amount('physique', 1);
+        change_amount('strength', 1);
+        change_amount('stamina', 1);
+        change_amount('speed', 1);
+        change_amount('intelligence', 1);
+        change_amount('dexterity', 1);
     }
 }
 
@@ -258,6 +282,14 @@ function change_amount(what_id, up) {
         }
     }
 }
+
+function change_weapon_knowledge(up) {
+    if (!up || parseInt(document.getElementById('known-weapon-level').innerText) < 25) {
+        change_amount('known-weapon-level', up);
+    }
+    weapon_arithmetic();
+}
+
 
 function throw_dice(dice_size) {
     let array = new Uint32Array(1);
@@ -352,7 +384,13 @@ function run_away_speed() {
 }
 
 function normal_attack() {
-    let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
+    let modifier = 0;
+    if (parseInt(document.getElementById("weapon-category").innerText) > parseInt(document.getElementById("known-weapon-category").innerText)) {
+        modifier = parseInt(-document.getElementById("weapon-modifier").innerText);
+    } else {
+        modifier = parseInt(document.getElementById("known-weapon-modifier").innerText);
+    }
+    let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + modifier;
     document.getElementById("normal-attack").innerText = sum;
 }
 
@@ -372,12 +410,25 @@ function counter_attack_dex() {
 }
 
 function double_attack() {
-    let sum = throw_d20() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
+    let modifier = 0;
+    if (parseInt(document.getElementById("weapon-category").innerText) > parseInt(document.getElementById("known-weapon-category").innerText)) {
+        modifier = parseInt(-document.getElementById("weapon-modifier").innerText);
+    } else {
+        modifier = parseInt(document.getElementById("known-weapon-modifier").innerText);
+    }
+    let sum = throw_d20() + parseInt(document.getElementById("attack").innerText) + modifier;
     document.getElementById("double-attack").innerText = sum;
 }
 
 function fury_attack() {
-    let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + parseInt(document.getElementById("known-weapon-modificator").innerText);
+    let modifier = 0;
+    if (parseInt(document.getElementById("weapon-category").innerText) > parseInt(document.getElementById("known-weapon-category").innerText)) {
+        modifier = parseInt(-document.getElementById("weapon-modifier").innerText);
+    } else {
+        modifier = parseInt(document.getElementById("known-weapon-modifier").innerText);
+    }
+    console.log(modifier);
+    let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + modifier;
     document.getElementById("fury-attack").innerText = sum;
 }
 
@@ -416,9 +467,11 @@ function cast_spell(spell_button_id, mana_cost_id) {
     }
 }
 
-function weapon_knowledge_arithmetic() {
-    let category = Math.ceil(parseInt(document.getElementById("known-weapon-level").innerText) / 5);
-    console.log(category);
-    document.getElementById("known-weapon-category").innerText = category;
-
+function weapon_arithmetic() {
+    let modifier = Math.floor(parseInt(document.getElementById("known-weapon-level").innerText) / 5);
+    if (modifier == 5)
+        modifier = 4;
+    document.getElementById("known-weapon-modifier").innerText = '+' + modifier;
+    document.getElementById("known-weapon-category").innerText = modifier + 1;
+    document.getElementById("weapon-modifier").innerText = parseInt(document.getElementById("weapon-category").innerText) - 1;
 }
