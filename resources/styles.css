@@ -74,6 +74,15 @@ body {
     margin: 2px;
 }
 
+.equip-button {
+    border-color: darkorange;
+    margin: 2px;
+    height: 2em;
+    width: 8em;
+    font-size: larger;
+    background-color: goldenrod;
+}
+
 .editor-mode {
     /*display: none;*/
 }

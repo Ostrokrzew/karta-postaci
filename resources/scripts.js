@@ -66,11 +66,20 @@ function current_equipment() {
     for (let item of document.getElementsByClassName("item")) {
         data[item.id] = item.innerHTML;
     }
+    
     return data;
 }
 
 function add_item_to_equipment() {
-    document.getElementById('equipment-items').appendChild();
+    let index = document.getElementsByClassName("item").length;
+    let table_body = document.getElementById('equipment-items');
+    let row = document.createElement("tr");
+    row.id = "item_" + index;
+    row.className = "item";
+    let cell_id = row.id + "_amount";
+    row.innerHTML = "<td style=\"text-align:left;\" contenteditable='true'></td><td id=\"" + cell_id + "\">1</td><td><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 1)\">+ 1</button><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 0)\">- 1</button></td><td style=\"text-align:left;\" contenteditable='true'></td>\n"
+
+    table_body.appendChild(row);
 }
 
 function save_to_cache() {
@@ -117,7 +126,7 @@ function load_from_cache() {
     console.log("Cached data loaded.");
 }
 
-async function commit_changes(changes_json, filename) {
+async function commit_changes(changes_json, filename, make_pr = false) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
 
     let info_text = JSON.stringify(changes_json, null, 4);
@@ -192,19 +201,21 @@ async function commit_changes(changes_json, filename) {
     });
     console.log(ref_update_response);
 
-    let pr_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/pulls', {
-        owner: 'Ostrokrzew',
-        repo: 'karta-postaci',
-        title: 'After game ' + Date.now(),
-        head: 'after-game',
-        base: 'master',
-    });
-    console.log(pr_response);
+    if (make_pr) {
+        let pr_response = await octokit.request('POST /repos/Ostrokrzew/karta-postaci/pulls', {
+            owner: 'Ostrokrzew',
+            repo: 'karta-postaci',
+            title: 'After game ' + Date.now(),
+            head: 'after-game',
+            base: 'master',
+        });
+        console.log(pr_response);
+    }
 }
 
 async function save() {
     await commit_changes(current_data(), 'info.json');
-    await commit_changes(current_equipment(), 'equip.json');
+    await commit_changes(current_equipment(), 'equip.json', true);
 }
 
 async function load_json(filename) {
@@ -262,8 +273,8 @@ async function load_all() {
     load(json_obj);
     load_images(json_obj);
 
-    json_obj = await load_json('equip.json');
-    load(json_obj);
+    // json_obj = await load_json('equip.json');
+    // load(json_obj);
 
     weapon_arithmetic();
     reload_hp();
