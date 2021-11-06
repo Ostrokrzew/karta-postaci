@@ -18,6 +18,7 @@
     "defence": "2",
     "known-weapon-level": "5",
     "weapon": "Topór",
+    "weapon-category": "2",
     "weapon-damage": "1k6",
     "sneak": "3",
     "poetry": "6",
