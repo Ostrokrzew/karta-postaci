@@ -66,7 +66,7 @@ function current_equipment() {
     for (let item of document.getElementsByClassName("item")) {
         data[item.id] = item.innerHTML;
     }
-    
+
     return data;
 }
 
@@ -77,7 +77,16 @@ function add_item_to_equipment() {
     row.id = "item_" + index;
     row.className = "item";
     let cell_id = row.id + "_amount";
-    row.innerHTML = "<td style=\"text-align:left;\" contenteditable='true'></td><td id=\"" + cell_id + "\">1</td><td><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 1)\">+ 1</button><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 0)\">- 1</button></td><td style=\"text-align:left;\" contenteditable='true'></td>\n"
+    row.innerHTML = "<td style=\"text-align:left;\" contenteditable='true'></td><td id=\"" + cell_id + "\">1</td><td><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 1)\">+ 1</button><button type=\"button\" onclick=\"change_amount('" + cell_id + "', 0)\">- 1</button></td><td style=\"text-align:left;\" contenteditable='true'></td>\n";
+
+    table_body.appendChild(row);
+}
+function add_item_to_equipment(row_id, content) {
+    let table_body = document.getElementById('equipment-items');
+    let row = document.createElement("tr");
+    row.id = row_id;
+    row.className = "item";
+    row.innerHTML = content;
 
     table_body.appendChild(row);
 }
@@ -248,6 +257,13 @@ function load_images(json_obj) {
     console.log("Images loaded");
 }
 
+function load_equipment(json_obj) {
+    for (const id in json_obj) {
+        add_item_to_equipment(id, json_obj[id]);
+    }
+    console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
+}
+
 function colorize(what_id, max_id) {
     let points = document.getElementById(what_id).innerText;
     if (points < 0.33 * parseInt(document.getElementById(max_id).innerText)) {
@@ -273,8 +289,8 @@ async function load_all() {
     load(json_obj);
     load_images(json_obj);
 
-    // json_obj = await load_json('equip.json');
-    // load(json_obj);
+    json_obj = await load_json('equip.json');
+    load_equipment(json_obj);
 
     weapon_arithmetic();
     reload_hp();
