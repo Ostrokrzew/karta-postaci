@@ -4,33 +4,41 @@ table, th, td {
     text-align: center;
     padding: 4px;
 }
+
 table {
     border: 2px solid black;
 }
+
 thead {
     font-size: large;
     color: black;
 }
+
 h1 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
     color: deeppink;
 }
+
 h2 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
     color: crimson;
 }
+
 h3 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
     color: hotpink;
 }
+
 h4 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
     color: hotpink;
     font-size: large;
 }
+
 body {
     background-color: rgba(119, 130, 155, 0.637);
 }
+
 .small-button {
     background-color: aquamarine;
     border-color: teal;
@@ -84,5 +92,5 @@ body {
 }
 
 .editor-mode {
-    /*display: none;*/
+    display: none;
 }

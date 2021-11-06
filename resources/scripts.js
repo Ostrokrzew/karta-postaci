@@ -130,10 +130,29 @@ function load_from_cache() {
     }
 
     for (const id in json_obj) {
-        document.getElementById(id).innerHTML = json_obj[id];
+        add_item_to_equipment(id, json_obj[id]);
     }
 
     console.log("Cached data loaded.");
+}
+
+function enter_editor_mode() {
+    let password = localStorage.getItem('password');
+    if (!password) {
+        password = prompt('Enter password');
+    }
+    // dummy line of defence against children
+    if (password == 'dupa') {
+        localStorage.setItem('password', password);
+        let editor_class = document.getElementsByClassName("editor-mode");
+        for (const item of editor_class) {
+            item.style.display = "table-cell";
+            item.style.alignSelf = "center";
+        }
+    }
+    else {
+        throw 'Wrong password';
+    }
 }
 
 async function commit_changes(changes_json, filename, make_pr = false) {
@@ -381,6 +400,12 @@ function change_weapon_knowledge(up) {
     weapon_arithmetic();
 }
 
+function change_weapon_category(up) {
+    if ((!up || parseInt(document.getElementById('weapon-category').innerText) < 5) && (up || parseInt(document.getElementById('weapon-category').innerText) > 1)) {
+        change_amount('weapon-category', up);
+    }
+    weapon_arithmetic();
+}
 
 function throw_dice(dice_size) {
     let array = new Uint32Array(1);

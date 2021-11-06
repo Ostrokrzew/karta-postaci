@@ -19,9 +19,10 @@
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
             <button type="submit" id="save_local" class="editor-mode" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
-            <button type="submit" id="load_local" class="editor-mode" onclick="load_from_cache()">LOAD LOCAL CHANGES</button>
-            <button type="submit" id="load" class="editor-mode" onclick="load_all()">LOAD CHANGES</button>
-            <button type="submit" id="save" class="editor-mode" onclick="save()">SAVE CHANGES</button><br>
+            <button type="submit" id="load_local" class="editor-mode" onclick="load_from_cache()">LOAD LOCAL CHANGES</button><br>
+            <button type="submit" id="save" class="editor-mode" onclick="save()">SAVE CHANGES</button>
+            <button type="submit" id="load" class="editor-mode" onclick="load_all()">LOAD CHANGES</button><br>
+            <button type="submit" id="edit" class="equip-button" onclick="enter_editor_mode()">EDIT</button>
         </div>
 
         <div id="info">
@@ -194,17 +195,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="attack"></td>
-                                    <td id="defence"></td>
-                                </tr>
-                                <tr class="editor-mode">
                                     <td>
-                                        <button type="button" onclick="change_amount('attack', 1)">+ 1</button>
-                                        <button type="button" onclick="change_amount('attack', 0)">- 1</button>
+                                        <dev id="attack"></dev><br>
+                                        <dev class="editor-mode">
+                                            <button type="button" onclick="change_amount('attack', 1)">+ 1</button>
+                                            <button type="button" onclick="change_amount('attack', 0)">- 1</button>
+                                        </dev>
                                     </td>
                                     <td>
-                                        <button type="button" onclick="change_amount('defence', 1)">+ 1</button>
-                                        <button type="button" onclick="change_amount('defence', 0)">- 1</button>
+                                        <dev id="defence"></dev><br>
+                                        <dev class="editor-mode">
+                                            <button type="button" onclick="change_amount('defence', 1)">+ 1</button>
+                                            <button type="button" onclick="change_amount('defence', 0)">- 1</button>
+                                        </dev>
                                     </td>
                                 </tr>
                             </tbody>
@@ -243,15 +246,21 @@
                                     <th><strong>Pòzwa</strong></th>
                                     <th><strong>Kategòriô</strong></th>
                                     <th><strong>Knôbel òbrażeniów</strong></th>
-                                    <th style="display: none"><strong>Mòdifikatór atakù</strong></th>
+                                    <th class="editor-mode"><strong>Mòdifikatór atakù</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="weapon"></td>
-                                    <td id="weapon-category"></td>
-                                    <td id="weapon-damage"></td>
-                                    <td id="weapon-modifier" style="display: none"></td>
+                                    <td id="weapon" contenteditable="true"></td>
+                                    <td>
+                                        <dev id="weapon-category"></dev><br>
+                                        <dev>
+                                            <button type="button" onclick="change_weapon_category(1)">+ 1</button>
+                                            <button type="button" onclick="change_weapon_category(0)">- 1</button>
+                                        </dev>
+                                    </td>
+                                    <td id="weapon-damage" contenteditable="true"></td>
+                                    <td class="editor-mode" id="weapon-modifier"></td>
                                 </tr>
                             </tbody>
                         </table>
