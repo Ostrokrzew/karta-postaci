@@ -36,6 +36,7 @@ function current_data() {
         "defence": document.getElementById("defence").innerText,
         "known-weapon-level": document.getElementById("known-weapon-level").innerText,
         "weapon": document.getElementById("weapon").innerText,
+        "weapon-category": document.getElementById("weapon-category").innerText,
         "weapon-damage": document.getElementById("weapon-damage").innerText,
         // skills
         "sneak": document.getElementById("sneak").innerText,
