@@ -149,6 +149,7 @@ function enter_editor_mode() {
             item.style.display = "table-cell";
             item.style.alignSelf = "center";
         }
+        document.getElementById("biography").contentEditable = true;
     }
     else {
         throw 'Wrong password';
