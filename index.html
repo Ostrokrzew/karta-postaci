@@ -5,11 +5,11 @@
         <title>Kôrta Pòstacjë</title>
         <script type="text/javascript" src="resources/scripts.js"></script>
         <link rel="stylesheet" href="resources/styles.css">
-<!--        <link rel="icon" type="image/png" href="images">-->
+        <link rel="icon" type="image/png" href="images/favicon.png">
     </head>
     <body onload="init_site()">
         <div style="float: right; text-align: center">
-            <img id="portrait" src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"><br>
+            <a id="portrait_big" href="images/mniszka_l.jpg"><img id="portrait" src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"></a><br>
             <button type="button" class="dice-button" id="k3" onclick="document.getElementById('k3').innerText = throw_d3()">K3</button>
             <button type="button" class="dice-button" id="k4" onclick="document.getElementById('k4').innerText = throw_d4()">K4</button>
             <button type="button" class="dice-button" id="k6" onclick="document.getElementById('k6').innerText = throw_d6()">K6</button>
@@ -18,10 +18,10 @@
             <button type="button" class="dice-button" id="k20" onclick="document.getElementById('k20').innerText = throw_d20()">K20</button>
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
-            <button type="submit" id="save_local" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
-            <button type="submit" id="load_local" onclick="load_from_cache()">LOAD LOCAL CHANGES</button>
-            <button type="submit" id="load" onclick="load()">LOAD CHANGES</button>
-            <button type="submit" id="save" onclick="save()">SAVE CHANGES</button>
+            <button type="submit" id="save_local" class="editor-mode" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
+            <button type="submit" id="load_local" class="editor-mode" onclick="load_from_cache()">LOAD LOCAL CHANGES</button>
+            <button type="submit" id="load" class="editor-mode" onclick="load_all()">LOAD CHANGES</button>
+            <button type="submit" id="save" class="editor-mode" onclick="save()">SAVE CHANGES</button><br>
         </div>
 
         <div id="info">
@@ -354,7 +354,7 @@
                         <tbody>
                             <tr>
                                 <td style='text-align:left;'>Skrôdanié</td>
-                                <td id="sneak">3</td>
+                                <td id="sneak"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('sneak', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('sneak', 0)">- 1</button>
@@ -363,7 +363,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Pòézjô</td>
-                                <td id="poetry">6</td>
+                                <td id="poetry"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('poetry', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('poetry', 0)">- 1</button>
@@ -372,7 +372,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kamùflôż</td>
-                                <td id="hiding">3</td>
+                                <td id="hiding"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('hiding', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('hiding', 0)">- 1</button>
@@ -381,7 +381,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Znajemnosc nôtërë</td>
-                                <td id="nature-knowledge">8</td>
+                                <td id="nature-knowledge"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('nature-knowledge', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('nature-knowledge', 0)">- 1</button>
@@ -390,7 +390,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Alchemiô</td>
-                                <td id="alchemy">9</td>
+                                <td id="alchemy"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('alchemy', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('alchemy', 0)">- 1</button>
@@ -399,7 +399,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Magia Gòrzana</td>
-                                <td id="black-magic">11</td>
+                                <td id="black-magic"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('black-magic', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('black-magic', 0)">- 1</button>
@@ -408,7 +408,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Òbróbka metalów</td>
-                                <td id="metal-processing">1</td>
+                                <td id="metal-processing"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('metal-processing', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('metal-processing', 0)">- 1</button>
@@ -417,7 +417,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Òbróbka kamiénia</td>
-                                <td id="stone-processing">1</td>
+                                <td id="stone-processing"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('stone-processing', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('stone-processing', 0)">- 1</button>
@@ -426,7 +426,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Òbróbka drzewa</td>
-                                <td id="wood-processing">1</td>
+                                <td id="wood-processing"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('wood-processing', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('wood-processing', 0)">- 1</button>
@@ -435,7 +435,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Znajemnosc kùltów</td>
-                                <td id="cults-knowledge">4</td>
+                                <td id="cults-knowledge"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('cults-knowledge', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('cults-knowledge', 0)">- 1</button>
@@ -444,7 +444,7 @@
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Łączba z dëchama</td>
-                                <td id="medium">5</td>
+                                <td id="medium"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('medium', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('medium', 0)">- 1</button>
@@ -454,6 +454,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div id='skills-detail' style="margin-right: 0.8em;">
                     <h4>Drobnotowé trimë</h4>
                     <table>
@@ -468,7 +469,7 @@
                         <tbody>
                             <tr>
                                 <td style='text-align:left;'>Szmërganié fiolkama</td>
-                                <td id="throw-vial">1</td>
+                                <td id="throw-vial"></td>
                                 <td class="editor-mode">
                                     <button type="button" onclick="change_amount('throw-vial', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('throw-vial', 0)">- 1</button>
@@ -478,6 +479,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div id='skills-empty' style="margin-right: 0.8em;">
                     <h4>Felëjącé trimë</h4>
                     <table>
@@ -489,6 +491,7 @@
                     </table>
                 </div>
             </div>
+        </div>
 
         <div id='magic'>
             <h2>Czarë</h2>
@@ -532,76 +535,76 @@
                         <th style='text-align:left;'><strong>Òpis</strong></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id='equipment-items'>
+                    <tr id="item_0" class="item">
                         <td style='text-align:left;'>Fiolka krwi</td>
-                        <td id="item_0">8</td>
+                        <td id="item_0_amount">8</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_0', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_0', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_0_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_0_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Fiolka z krwią</td>
                     </tr>
-                    <tr>
+                    <tr id="item_1" class="item">
                         <td style='text-align:left;'>Złoté gùldenë</td>
-                        <td id="item_1">1</td>
+                        <td id="item_1_amount">1</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_1', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_1', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_1_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_1_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Dëtczi Sarcenie</td>
                     </tr>
-                    <tr>
+                    <tr id="item_2" class="item">
                         <td style='text-align:left;'>Miészk grzibów</td>
-                        <td id="item_2">3</td>
+                        <td id="item_2_amount">3</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_2', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_2', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_2_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_2_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Miészk z halucynogennyma grzibkama</td>
                     </tr>
-                    <tr>
+                    <tr id="item_3" class="item">
                         <td style='text-align:left;'>Laska Gòrzana</td>
-                        <td id="item_3">1</td>
+                        <td id="item_3_amount">1</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_3', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_3', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_3_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_3_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Artefakt z zakònu Gòrzana na Ôsce. Nieznóné dzejanié.</td>
                     </tr>
-                    <tr>
+                    <tr id="item_4" class="item">
                         <td style='text-align:left;'>Topór</td>
-                        <td id="item_4">1</td>
+                        <td id="item_4_amount">1</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_4', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_4', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_4_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_4_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Zwëczajny topór. <em><strong>1k6</strong></em> òbrażeniów</td>
                     </tr>
-                    <tr>
+                    <tr id="item_5" class="item">
                         <td style='text-align:left;'>Jagòdë</td>
-                        <td id="item_5">5</td>
+                        <td id="item_5_amount">5</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_5', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_5', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_5_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_5_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Miészk z lesnyma jagòdama do jedzeniégò</td>
                     </tr>
-                    <tr>
+                    <tr id="item_6" class="item">
                         <td style='text-align:left;'>Mniszczin mańtel</td>
-                        <td id="item_6">1</td>
+                        <td id="item_6_amount">1</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_6', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_6', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_6_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_6_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Cepłi òblëczënk. Òchrona przed zybã +1</td>
                     </tr>
-                    <tr>
+                    <tr id="item_7" class="item">
                         <td style='text-align:left;'>Krzôska</td>
-                        <td id="item_7">1</td>
+                        <td id="item_7_amount">1</td>
                         <td>
-                            <button type="button" onclick="change_amount('item_7', 1)">+ 1</button>
-                            <button type="button" onclick="change_amount('item_7', 0)">- 1</button>
+                            <button type="button" onclick="change_amount('item_7_amount', 1)">+ 1</button>
+                            <button type="button" onclick="change_amount('item_7_amount', 0)">- 1</button>
                         </td>
                         <td style='text-align:left;'>Krzôska do rozpalaniégò ògnia</td>
                     </tr>

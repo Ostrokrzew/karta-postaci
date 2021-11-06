@@ -11,14 +11,16 @@ function reload_mana() {
     load_max("mana", "max-mana");
 }
 
-function load_current_data() {
+function current_data() {
     const data = {
         // info
         "name": document.getElementById("name").innerText,
         "race": document.getElementById("race").innerText,
         "profession": document.getElementById("profession").innerText,
         "biography": document.getElementById("biography").innerText,
+        // image
         "portrait": document.getElementById("portrait").src,
+        "portrait_big": document.getElementById("portrait_big").href,
         // main stats
         "max-hp": document.getElementById("max-hp").innerText,
         "max-mana": document.getElementById("max-mana").innerText,
@@ -55,31 +57,67 @@ function load_current_data() {
         "bloodlust-spell": document.getElementById("bloodlust-spell").innerText,
         "bloodlust-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
         "bloodlust-spell-duration": document.getElementById("bloodlust-spell-duration").innerText,
-        // equipment
     }
     return data;
 }
 
+function current_equipment() {
+    let data = {};
+    for (let item of document.getElementsByClassName("item")) {
+        data[item.id] = item.innerHTML;
+    }
+    return data;
+}
+
+function add_item_to_equipment() {
+    document.getElementById('equipment-items').appendChild();
+}
+
 function save_to_cache() {
     try {
-        localStorage.setItem("data", JSON.stringify(load_current_data(), null, 4));
-        console.log("data saved");
-    } catch (QuotaExceededError) {
-        console.log("data cannot be saved");
-    } finally {
-        console.log("data: " + localStorage.getItem("data"));
+        localStorage.setItem("data", JSON.stringify(current_data(), null, 4));
+        localStorage.setItem("equip", JSON.stringify(current_equipment(), null, 4));
+        console.log("Data saved to cache");
+    } catch (err) {
+        console.log("Data cannot be saved. Error: " + err);
     }
 }
 
 function load_from_cache() {
-    const json_obj = JSON.parse(localStorage.getItem("data"));
-    for (const id in json_obj) {
-        document.getElementById(id).innerText = json_obj[id];
+    let json_obj = JSON.parse(localStorage.getItem("data"));
+    try {
+        if (json_obj.empty()) {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Character data you're trying to load is " + err);
     }
-    console.log("cached data loaded");
+
+    for (const id in json_obj) {
+        if (!id.includes('portrait')) {
+            document.getElementById(id).innerHTML = json_obj[id];
+        }
+    }
+    document.getElementById('portrait').src = json_obj['portrait'];
+    document.getElementById('portrait_big').href = json_obj['portrait_big'];
+
+    json_obj = JSON.parse(localStorage.getItem("equip"));
+    try {
+        if (json_obj.empty()) {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Equipment data you're trying to load is " + err);
+    }
+
+    for (const id in json_obj) {
+        document.getElementById(id).innerHTML = json_obj[id];
+    }
+
+    console.log("Cached data loaded.");
 }
 
-async function commit_changes(changes_json) {
+async function commit_changes(changes_json, filename) {
     let module = await import('https://cdn.skypack.dev/@octokit/rest');
 
     let info_text = JSON.stringify(changes_json, null, 4);
@@ -127,7 +165,7 @@ async function commit_changes(changes_json) {
         repo: 'karta-postaci',
         base_tree: head_response.data.tree.sha,
         tree: [{
-            path: 'resources/info.json',
+            path: 'resources/'+ filename,
             mode: '100644',
             type: 'blob',
             content: info_text
@@ -164,20 +202,39 @@ async function commit_changes(changes_json) {
     console.log(pr_response);
 }
 
-function save() {
-    commit_changes(load_current_data());
-    console.log("saved data: " + localStorage.getItem("data"));
+async function save() {
+    await commit_changes(current_data(), 'info.json');
+    await commit_changes(current_equipment(), 'equip.json');
 }
 
-async function load() {
-    let json = await fetch('resources/info.json');
-    let json_text = await json.text();
-    console.log(json_text);
-    const json_obj = JSON.parse(json_text);
-    for (const id in json_obj) {
-        document.getElementById(id).innerText = json_obj[id];
+async function load_json(filename) {
+    var json = await fetch('resources/'+ filename);
+    var json_text = await json.text();
+    try {
+        if (json_text == "") {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Data you're trying to load is " + err);
     }
-    console.log("data loaded");
+
+    var json_obj = await JSON.parse(json_text);
+    return json_obj;
+}
+
+function load(json_obj) {
+    for (const id in json_obj) {
+        if (!id.includes('portrait')) {
+            document.getElementById(id).innerHTML = json_obj[id];
+        }
+    }
+    console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
+}
+
+function load_images(json_obj) {
+    document.getElementById('portrait').src = json_obj['portrait'];
+    document.getElementById('portrait_big').href = json_obj['portrait_big'];
+    console.log("Images loaded");
 }
 
 function colorize(what_id, max_id) {
@@ -201,7 +258,13 @@ function colorize_mana() {
 }
 
 async function load_all() {
-    await load();
+    let json_obj = await load_json('info.json');
+    load(json_obj);
+    load_images(json_obj);
+
+    json_obj = await load_json('equip.json');
+    load(json_obj);
+
     weapon_arithmetic();
     reload_hp();
     reload_mana();
@@ -427,7 +490,6 @@ function fury_attack() {
     } else {
         modifier = parseInt(document.getElementById("known-weapon-modifier").innerText);
     }
-    console.log(modifier);
     let sum = throw_d32() + parseInt(document.getElementById("attack").innerText) + modifier;
     document.getElementById("fury-attack").innerText = sum;
 }

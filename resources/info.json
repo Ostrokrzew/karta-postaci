@@ -4,6 +4,7 @@
     "profession": "Mniszka",
     "biography": "Plac na biografiã",
     "portrait": "https://ostrokrzew.github.io/karta-postaci/images/mniszka_s.jpg",
+    "portrait_big": "https://ostrokrzew.github.io/karta-postaci/images/mniszka_l.jpg",
     "max-hp": "10",
     "max-mana": "10",
     "physique": "5",
@@ -32,8 +33,8 @@
     "throw-vial": "1",
     "rage-spell": "Barch",
     "rage-spell-cost": "5",
-    "rage-spell-duration": "3",
+    "rage-spell-duration": "3 ruńdë",
     "bloodlust-spell": "Pôcha krwi",
     "bloodlust-spell-cost": "5",
-    "bloodlust-spell-duration": "3"
+    "bloodlust-spell-duration": "3 ruńdë"
 }
