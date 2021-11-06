@@ -183,7 +183,7 @@ async function commit_changes(changes_json, filename, make_pr = false) {
         repo: 'karta-postaci',
         base_tree: head_response.data.tree.sha,
         tree: [{
-            path: 'resources/'+ filename,
+            path: 'data/'+ filename,
             mode: '100644',
             type: 'blob',
             content: info_text
@@ -228,7 +228,7 @@ async function save() {
 }
 
 async function load_json(filename) {
-    var json = await fetch('resources/'+ filename);
+    var json = await fetch('data/'+ filename);
     var json_text = await json.text();
     try {
         if (json_text == "") {
