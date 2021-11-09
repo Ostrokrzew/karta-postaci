@@ -168,13 +168,19 @@ function add_skill(row_id, content, detailed) {
     row.id = row_id;
     row.className = class_name;
     row.innerHTML = content;
-    console.log(row);
 
     table_body.appendChild(row);
 }
 
-function clear_skills() {
-    
+function clear_tables() {
+    let table_body = document.getElementById('equipment-items');
+    table_body.innerHTML = '';
+    table_body = document.getElementById('magic-spells');
+    table_body.innerHTML = '';
+    table_body = document.getElementById('generic-skills');
+    table_body.innerHTML = '';
+    table_body = document.getElementById('detailed-skills');
+    table_body.innerHTML = '';
 }
 
 function save_to_cache() {
@@ -207,6 +213,8 @@ function load_from_cache() {
     }
     document.getElementById('portrait').src = json_obj['portrait'];
     document.getElementById('portrait_big').href = json_obj['portrait_big'];
+
+    clear_tables();
 
     let equip = localStorage.getItem("equip")
     try {
@@ -299,9 +307,9 @@ function leave_editor_mode() {
     for (const item of editor_class) {
         item.style.display = "none";
     }
-    editor_class = document.getElementsByClassName('non-editable');
-    for (const item of editor_class) {
-        item.contenteditable = false;
+    editor_class = document.getElementsByClassName('non-editable')
+    for (let spell of editor_class) {
+        spell.contentEditable = false;
     }
 
     document.getElementById("biography").contentEditable = false;
@@ -482,6 +490,8 @@ async function load_all() {
     let json_obj = await load_json('info.json');
     load(json_obj);
     load_images(json_obj);
+
+    clear_tables();
 
     json_obj = await load_json('equip.json');
     load_equipment(json_obj);
