@@ -2,12 +2,23 @@ function load_max(what_id, max_id) {
     document.getElementById(what_id).innerText = parseInt(document.getElementById(max_id).innerText);
 }
 
-function reload_hp() {
+function calculate_max_hp() {
     document.getElementById('max-hp').innerText = parseInt(document.getElementById('stamina').innerText) + parseInt(document.getElementById('physique').innerText);
+}
+
+function recalculate_hp() {
+    calculate_max_hp();
+    if (parseInt(document.getElementById('hp').innerText) > parseInt(document.getElementById('max-hp').innerText)) {
+        load_max("hp", "max-hp");
+    }
+}
+
+function load_hp() {
+    calculate_max_hp();
     load_max("hp", "max-hp");
 }
 
-function reload_mana() {
+function load_mana() {
     load_max("mana", "max-mana");
 }
 
@@ -37,27 +48,7 @@ function current_data() {
         "known-weapon-level": document.getElementById("known-weapon-level").innerText,
         "weapon": document.getElementById("weapon").innerText,
         "weapon-category": document.getElementById("weapon-category").innerText,
-        "weapon-damage": document.getElementById("weapon-damage").innerText,
-        // skills
-        "sneak": document.getElementById("sneak").innerText,
-        "poetry": document.getElementById("poetry").innerText,
-        "hiding": document.getElementById("hiding").innerText,
-        "nature-knowledge": document.getElementById("nature-knowledge").innerText,
-        "alchemy": document.getElementById("alchemy").innerText,
-        "black-magic": document.getElementById("black-magic").innerText,
-        "metal-processing": document.getElementById("metal-processing").innerText,
-        "stone-processing": document.getElementById("stone-processing").innerText,
-        "wood-processing": document.getElementById("wood-processing").innerText,
-        "cults-knowledge": document.getElementById("cults-knowledge").innerText,
-        "medium": document.getElementById("medium").innerText,
-        "throw-vial": document.getElementById("throw-vial").innerText,
-        // magic
-        "rage-spell": document.getElementById("rage-spell").innerText,
-        "rage-spell-cost": document.getElementById("rage-spell-cost").innerText,
-        "rage-spell-duration": document.getElementById("rage-spell-duration").innerText,
-        "bloodlust-spell": document.getElementById("bloodlust-spell").innerText,
-        "bloodlust-spell-cost": document.getElementById("bloodlust-spell-cost").innerText,
-        "bloodlust-spell-duration": document.getElementById("bloodlust-spell-duration").innerText,
+        "weapon-damage": document.getElementById("weapon-damage").innerText
     }
     return data;
 }
@@ -71,7 +62,7 @@ function current_equipment() {
     return data;
 }
 
-function add_item_to_equipment() {
+function add_new_item_to_equipment() {
     let index = document.getElementsByClassName("item").length;
     let table_body = document.getElementById('equipment-items');
     let row = document.createElement("tr");
@@ -92,10 +83,106 @@ function add_item_to_equipment(row_id, content) {
     table_body.appendChild(row);
 }
 
+function current_spells() {
+    let data = {};
+    for (let item of document.getElementsByClassName("spell")) {
+        data[item.id] = item.innerHTML;
+    }
+    return data;
+}
+
+function add_new_spell() {
+    let index = document.getElementsByClassName("spell").length;
+    let table_body = document.getElementById('magic-spells');
+    let row = document.createElement("tr");
+    row.id = "spell_" + index;
+    row.className = "spell";
+    let cost = row.id + "-cost";
+    let button = row.id + "-button";
+
+    row.innerHTML = "<td style=\"text-align:left;\" class='non-editable' contenteditable='true'></td><td id='" + cost + "'>1</td><td class=\"editor-mode\" style='display: table-cell'><button type=\"button\" onclick=\"change_amount('" + cost + "', 1)\">+ 1</button><button type=\"button\" onclick=\"change_amount('" + cost + "', 0)\">- 1</button></td><td><button type=\"button\" class='magic-button' id='" + button + "' onclick=\"cast_spell('" + button + "', '" + cost + "')\">Szmërgnij zôklãcé</button></td><td class='non-editable' contenteditable='true'>1 ruńda</td><td style=\"text-align:left;\" class='non-editable' contenteditable='true'></td>\n";
+
+    table_body.appendChild(row);
+}
+
+function add_spell(row_id, content) {
+    let table_body = document.getElementById('magic-spells');
+    let row = document.createElement("tr");
+    row.id = row_id;
+    row.className = "spell";
+    row.innerHTML = content;
+
+    table_body.appendChild(row);
+}
+
+function current_skills() {
+    let data = {};
+    data['generic'] = {};
+    data['detailed'] = {};
+    for (let item of document.getElementsByClassName("skill_gen")) {
+        data["generic"][item.id] = item.innerHTML;
+    }
+    for (let item of document.getElementsByClassName("skill_det")) {
+        data["detailed"][item.id] = item.innerHTML;
+    }
+    console.log(JSON.stringify(data, null, 4));
+    return data;
+}
+
+function add_new_skill(detailed) {
+    let index, table_body, row_id, class_name;
+    if (detailed) {
+        index = document.getElementsByClassName("skill_det").length;
+        table_body = document.getElementById('detailed-skills');
+        class_name = 'skill_det'
+        row_id = "skill_det_"
+    } else {
+        index = document.getElementsByClassName("skill_gen").length;
+        table_body = document.getElementById('generic-skills');
+        class_name = 'skill_gen'
+        row_id = "skill_"
+    }
+
+    let row = document.createElement("tr");
+    row.id = row_id + index;
+    row.className = class_name;
+    let points = row.id + "-points";
+    let button = row.id + "-button";
+
+    row.innerHTML = "<td class='non-editable' style='text-align:left;' contenteditable='true'></td><td id='" + points + "'>1</td><td class='editor-mode' style='display: table-cell'><button type='button' onclick=\"change_amount('" + points + "', 1)\">+ 1</button><button type='button' onclick=\"change_amount('" + points + "', 0)\">- 1</button></td><td><button type='button' class='big-button' id='" + button + "' onclick=\"normal_test('" + points + "', '" + button + "')\">Szmërgnij knôblã</button></td>\n";
+
+    table_body.appendChild(row);
+}
+
+function add_skill(row_id, content, detailed) {
+    let table_body, class_name;
+    if (detailed) {
+        table_body = document.getElementById('detailed-skills');
+        class_name = 'skill_det'
+    } else {
+        table_body = document.getElementById('generic-skills');
+        class_name = 'skill_gen'
+    }
+
+    let row = document.createElement("tr");
+    row.id = row_id;
+    row.className = class_name;
+    row.innerHTML = content;
+    console.log(row);
+
+    table_body.appendChild(row);
+}
+
+function clear_skills() {
+    
+}
+
 function save_to_cache() {
     try {
         localStorage.setItem("data", JSON.stringify(current_data(), null, 4));
         localStorage.setItem("equip", JSON.stringify(current_equipment(), null, 4));
+        localStorage.setItem("spells", JSON.stringify(current_spells(), null, 4));
+        localStorage.setItem("skills", JSON.stringify(current_skills(), null, 4));
         console.log("Data saved to cache");
     } catch (err) {
         console.log("Data cannot be saved. Error: " + err);
@@ -103,15 +190,16 @@ function save_to_cache() {
 }
 
 function load_from_cache() {
-    let json_obj = JSON.parse(localStorage.getItem("data"));
+    let info = localStorage.getItem("data")
     try {
-        if (json_obj.empty()) {
+        if (!info) {
             throw 'empty';
         }
     } catch (err) {
         console.log("Character data you're trying to load is " + err);
     }
 
+    let json_obj = JSON.parse(info);
     for (const id in json_obj) {
         if (!id.includes('portrait')) {
             document.getElementById(id).innerHTML = json_obj[id];
@@ -120,17 +208,51 @@ function load_from_cache() {
     document.getElementById('portrait').src = json_obj['portrait'];
     document.getElementById('portrait_big').href = json_obj['portrait_big'];
 
-    json_obj = JSON.parse(localStorage.getItem("equip"));
+    let equip = localStorage.getItem("equip")
     try {
-        if (json_obj.empty()) {
+        if (!equip) {
             throw 'empty';
         }
     } catch (err) {
         console.log("Equipment data you're trying to load is " + err);
     }
 
+    json_obj = JSON.parse(equip);
     for (const id in json_obj) {
         add_item_to_equipment(id, json_obj[id]);
+    }
+
+    let spells = localStorage.getItem("spells")
+    try {
+        if (!spells) {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Spells data you're trying to load is " + err);
+    }
+
+    json_obj = JSON.parse(spells);
+
+    for (const id in json_obj) {
+        add_spell(id, json_obj[id]);
+    }
+
+    let skills = localStorage.getItem("skills")
+    try {
+        if (!skills) {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Skills data you're trying to load is " + err);
+    }
+
+    json_obj = JSON.parse(skills);
+
+    for (const id in json_obj['generic']) {
+        add_skill(id, json_obj['generic'][id], false);
+    }
+    for (const id in json_obj['detailed']) {
+        add_skill(id, json_obj['detailed'][id], true);
     }
 
     console.log("Cached data loaded.");
@@ -144,16 +266,48 @@ function enter_editor_mode() {
     // dummy line of defence against children
     if (password == 'dupa') {
         localStorage.setItem('password', password);
+
         let editor_class = document.getElementsByClassName("editor-mode");
         for (const item of editor_class) {
             item.style.display = "table-cell";
-            item.style.alignSelf = "center";
         }
+        editor_class = document.getElementsByClassName("editor-mode-button");
+        for (const item of editor_class) {
+            item.style.display = "inline";
+        }
+        editor_class = document.getElementsByClassName('non-editable')
+        for (let spell of editor_class) {
+            spell.contentEditable = true;
+        }
+
         document.getElementById("biography").contentEditable = true;
+        document.getElementById("biography").style.backgroundColor = "white";
+        document.getElementById("edit").style.display = 'none';
+        document.getElementById("leave-edit").style.display = 'inline';
     }
     else {
         throw 'Wrong password';
     }
+}
+
+function leave_editor_mode() {
+    let editor_class = document.getElementsByClassName("editor-mode");
+    for (const item of editor_class) {
+        item.style.display = "none";
+    }
+    editor_class = document.getElementsByClassName("editor-mode-button");
+    for (const item of editor_class) {
+        item.style.display = "none";
+    }
+    editor_class = document.getElementsByClassName('non-editable');
+    for (const item of editor_class) {
+        item.contenteditable = false;
+    }
+
+    document.getElementById("biography").contentEditable = false;
+    document.getElementById("biography").style.backgroundColor = "initial";
+    document.getElementById("edit").style.display = 'inline';
+    document.getElementById("leave-edit").style.display = 'none';
 }
 
 async function commit_changes(changes_json, filename, make_pr = false) {
@@ -245,6 +399,8 @@ async function commit_changes(changes_json, filename, make_pr = false) {
 
 async function save() {
     await commit_changes(current_data(), 'info.json');
+    await commit_changes(current_spells(), 'spells.json');
+    await commit_changes(current_skills(), 'skills.json');
     await commit_changes(current_equipment(), 'equip.json', true);
 }
 
@@ -285,6 +441,23 @@ function load_equipment(json_obj) {
     console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
 }
 
+function load_spells(json_obj) {
+    for (const id in json_obj) {
+        add_spell(id, json_obj[id]);
+    }
+    console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
+}
+
+function load_skills(json_obj) {
+    for (const id in json_obj['generic']) {
+        add_skill(id, json_obj['generic'][id], false);
+    }
+    for (const id in json_obj['detailed']) {
+        add_skill(id, json_obj['detailed'][id], true);
+    }
+    console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
+}
+
 function colorize(what_id, max_id) {
     let points = document.getElementById(what_id).innerText;
     if (points < 0.33 * parseInt(document.getElementById(max_id).innerText)) {
@@ -313,9 +486,15 @@ async function load_all() {
     json_obj = await load_json('equip.json');
     load_equipment(json_obj);
 
+    json_obj = await load_json('spells.json');
+    load_spells(json_obj);
+
+    json_obj = await load_json('skills.json');
+    load_skills(json_obj);
+
     weapon_arithmetic();
-    reload_hp();
-    reload_mana();
+    load_hp();
+    load_mana();
 }
 
 async function init_site() {
@@ -363,6 +542,7 @@ function change_sober_mind(up) {
     } else if (current_sober_mind < 5 && parseInt(document.getElementById("sober-mind").innerText) >= 5) {
         sober_mind_arithmetic(0);
     }
+    recalculate_hp();
 }
 
 function sober_mind_arithmetic(penalty) {
@@ -457,22 +637,22 @@ function colorize_test(test_button_id) {
     }
 }
 
-function normal_test(skill_id) {
+function normal_test(skill_id, skill_button) {
     let sum = throw_d32() + parseInt(document.getElementById(skill_id).innerText);
-    document.getElementById(skill_id + "-button").innerText = sum;
-    colorize_test(skill_id + "-button")
+    document.getElementById(skill_button).innerText = sum;
+    colorize_test(skill_button);
 }
 
 function penalty_test() {
     let sum = Math.min(throw_d20(), throw_d20()) + throw_d12();
     document.getElementById("no-skill-button").innerText = sum;
-    colorize_test("no-skill-button")
+    colorize_test("no-skill-button");
 }
 
-function premium_test(skill_id) {
+function premium_test(skill_id, skill_button) {
     let sum = Math.max(throw_d20(), throw_d20()) + throw_d12() + parseInt(document.getElementById(skill_id).innerText);
-    document.getElementById(skill_id + "-button").innerText = sum;
-    colorize_test(skill_id + "-button")
+    document.getElementById(skill_button).innerText = sum;
+    colorize_test(skill_button);
 }
 
 function normal_defence() {
@@ -491,12 +671,12 @@ function very_weak_defence() {
 }
 
 function run_away_sm() {
-    normal_test('sober-mind');
+    normal_test('sober-mind', 'sober-mind-button');
     document.getElementById("run-away-sm").innerText = document.getElementById("sober-mind-button").innerText;
 }
 
 function run_away_speed() {
-    normal_test('speed');
+    normal_test('speed', 'speed-button');
     document.getElementById("run-away-speed").innerText = document.getElementById("speed-button").innerText;
 }
 
@@ -522,7 +702,7 @@ function counter_attack_def() {
 }
 
 function counter_attack_dex() {
-    normal_test('dexterity');
+    normal_test('dexterity', 'dexterity-button');
     document.getElementById("counter-attack-dex").innerText = document.getElementById("dexterity-button").innerText;
 }
 

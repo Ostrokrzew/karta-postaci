@@ -18,11 +18,12 @@
             <button type="button" class="dice-button" id="k20" onclick="document.getElementById('k20').innerText = throw_d20()">K20</button>
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
-            <button type="submit" id="save_local" class="editor-mode" onclick="save_to_cache()">SAVE CHANGES LOCALLY</button>
-            <button type="submit" id="load_local" class="editor-mode" onclick="load_from_cache()">LOAD LOCAL CHANGES</button><br>
-            <button type="submit" id="save" class="editor-mode" onclick="save()">SAVE CHANGES</button>
-            <button type="submit" id="load" class="editor-mode" onclick="load_all()">LOAD CHANGES</button><br>
-            <button type="submit" id="edit" class="equip-button" onclick="enter_editor_mode()">EDIT</button>
+            <button type="submit" id="save_local" class="editor-mode-button" onclick="save_to_cache()">Zôpiszë zmianë w cache'u</button>
+            <button type="submit" id="load_local" class="editor-mode-button" onclick="load_from_cache()">Wczëtôj zmianë z cache'a</button><br>
+            <button type="submit" id="save" class="editor-mode-button" onclick="save()">Zôpiszë zmianë</button>
+            <button type="submit" id="load" class="editor-mode-button" onclick="load_all()">Wczëtôj zmianë</button><br>
+            <button type="button" id="edit" class="non-editor-mode-button" onclick="enter_editor_mode()">Edicjô</button>
+            <button type="button" id="leave-edit" class="editor-mode-button" onclick="leave_editor_mode()">Wińdzë z edicjë</button>
         </div>
 
         <div id="info">
@@ -30,7 +31,7 @@
             <h2>Rasa: <dev id='race'></dev></h2>
             <h2>Wark: <dev id='profession'></dev></h2>
             <h2 style="color: orangered">Biografiô</h2>
-            <p id='biography'></p>
+            <p id='biography' style="width: 50%"></p>
         </div>
 
         <div id='characteristics'>
@@ -107,10 +108,10 @@
                                 <td style='text-align:left;'>Bùdowa Cała</td>
                                 <td id="physique"></td>
                                 <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('physique', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('physique', 0)">- 1</button>
+                                    <button type="button" onclick="change_amount('physique', 1), recalculate_hp()">+ 1</button>
+                                    <button type="button" onclick="change_amount('physique', 0), recalculate_hp()">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="physique-button" onclick="normal_test('physique')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="physique-button" onclick="normal_test('physique', 'physique-button')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kraft</td>
@@ -119,16 +120,16 @@
                                     <button type="button" onclick="change_amount('strength', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('strength', 0)">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="strength-button" onclick="normal_test('strength')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="strength-button" onclick="normal_test('strength', 'strength-button')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Kòndicjô</td>
                                 <td id="stamina"></td>
                                 <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('stamina', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('stamina', 0)">- 1</button>
+                                    <button type="button" onclick="change_amount('stamina', 1), recalculate_hp()">+ 1</button>
+                                    <button type="button" onclick="change_amount('stamina', 0), recalculate_hp()">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="stamina-button" onclick="normal_test('stamina')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="stamina-button" onclick="normal_test('stamina', 'stamina-button')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Chùtkòsc</td>
@@ -137,7 +138,7 @@
                                     <button type="button" onclick="change_amount('speed', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('speed', 0)">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="speed-button" onclick="normal_test('speed')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="speed-button" onclick="normal_test('speed', 'speed-button')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Jintelekt</td>
@@ -146,7 +147,7 @@
                                     <button type="button" onclick="change_amount('intelligence', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('intelligence', 0)">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="intelligence-button" onclick="normal_test('intelligence')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="intelligence-button" onclick="normal_test('intelligence', 'intelligence-button')">Szmërgnij knôblã</button></td>
                             </tr>
                             <tr>
                                 <td style='text-align:left;'>Zrãcznosc</td>
@@ -155,7 +156,7 @@
                                     <button type="button" onclick="change_amount('dexterity', 1)">+ 1</button>
                                     <button type="button" onclick="change_amount('dexterity', 0)">- 1</button>
                                 </td>
-                                <td><button type="button" class="big-button" id="dexterity-button" onclick="normal_test('dexterity')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="dexterity-button" onclick="normal_test('dexterity', 'dexterity-button')">Szmërgnij knôblã</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -171,7 +172,7 @@
                         </thead>
                         <tr>
                             <td id="sober-mind"></td>
-                            <td><button type="button" class="big-button" id="sober-mind-button" onclick="normal_test('sober-mind')">Szmërgnij knôblã</button></td>
+                            <td><button type="button" class="big-button" id="sober-mind-button" onclick="normal_test('sober-mind', 'sober-mind-button')">Szmërgnij knôblã</button></td>
                         </tr>
                     </table>
                     <div id=sober-mind-buttons style="margin: 8px 0px;">
@@ -196,14 +197,14 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <dev id="attack"></dev><br>
+                                        <dev id="attack"></dev>
                                         <dev class="editor-mode">
                                             <button type="button" onclick="change_amount('attack', 1)">+ 1</button>
                                             <button type="button" onclick="change_amount('attack', 0)">- 1</button>
                                         </dev>
                                     </td>
                                     <td>
-                                        <dev id="defence"></dev><br>
+                                        <dev id="defence"></dev>
                                         <dev class="editor-mode">
                                             <button type="button" onclick="change_amount('defence', 1)">+ 1</button>
                                             <button type="button" onclick="change_amount('defence', 0)">- 1</button>
@@ -360,111 +361,13 @@
                                 <th><strong>Test</strong></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td style='text-align:left;'>Skrôdanié</td>
-                                <td id="sneak"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('sneak', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('sneak', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="sneak-button" onclick="normal_test('sneak')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Pòézjô</td>
-                                <td id="poetry"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('poetry', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('poetry', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="poetry-button" onclick="normal_test('poetry')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Kamùflôż</td>
-                                <td id="hiding"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('hiding', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('hiding', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="hiding-button" onclick="normal_test('hiding')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Znajemnosc nôtërë</td>
-                                <td id="nature-knowledge"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('nature-knowledge', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('nature-knowledge', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="nature-knowledge-button" onclick="normal_test('nature-knowledge')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Alchemiô</td>
-                                <td id="alchemy"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('alchemy', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('alchemy', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="alchemy-button" onclick="normal_test('alchemy')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Magia Gòrzana</td>
-                                <td id="black-magic"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('black-magic', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('black-magic', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="black-magic-button" onclick="normal_test('black-magic')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Òbróbka metalów</td>
-                                <td id="metal-processing"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('metal-processing', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('metal-processing', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="metal-processing-button" onclick="normal_test('metal-processing')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Òbróbka kamiénia</td>
-                                <td id="stone-processing"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('stone-processing', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('stone-processing', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="stone-processing-button" onclick="normal_test('stone-processing')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Òbróbka drzewa</td>
-                                <td id="wood-processing"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('wood-processing', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('wood-processing', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="wood-processing-button" onclick="normal_test('wood-processing')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Znajemnosc kùltów</td>
-                                <td id="cults-knowledge"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('cults-knowledge', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('cults-knowledge', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="cults-knowledge-button" onclick="normal_test('cults-knowledge')">Szmërgnij knôblã</button></td>
-                            </tr>
-                            <tr>
-                                <td style='text-align:left;'>Łączba z dëchama</td>
-                                <td id="medium"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('medium', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('medium', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="medium-button" onclick="normal_test('medium')">Szmërgnij knôblã</button></td>
-                            </tr>
+                        <tbody id="generic-skills">
                         </tbody>
                     </table>
+                    <button type="button" class="editor-mode-button" onclick="add_new_skill(false)">Dodôj òglowi trim</button>
                 </div>
 
-                <div id='skills-detail' style="margin-right: 0.8em;">
+                <div id='skills-detailed' style="margin-right: 0.8em;">
                     <h4>Drobnotowé trimë</h4>
                     <table>
                         <thead>
@@ -475,18 +378,10 @@
                                 <th><strong>Test</strong></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td style='text-align:left;'>Szmërganié fiolkama</td>
-                                <td id="throw-vial"></td>
-                                <td class="editor-mode">
-                                    <button type="button" onclick="change_amount('throw-vial', 1)">+ 1</button>
-                                    <button type="button" onclick="change_amount('throw-vial', 0)">- 1</button>
-                                </td>
-                                <td><button type="button" class="big-button" id="throw-vial-button" onclick="premium_test('throw-vial')">Szmërgnij knôblã</button></td>
-                            </tr>
+                        <tbody id="detailed-skills">
                         </tbody>
                     </table>
+                    <button type="button" class="editor-mode-button" onclick="add_new_skill(true)">Dodôj drobnotowi trim</button>
                 </div>
 
                 <div id='skills-empty' style="margin-right: 0.8em;">
@@ -494,7 +389,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <td><button type="button" class="big-button" id="no-skill-button" onclick="penalty_test('no-skill')">Szmërgnij knôblã</button></td>
+                                <td><button type="button" class="big-button" id="no-skill-button" onclick="penalty_test()">Szmërgnij knôblã</button></td>
                             </tr>
                         </thead>
                     </table>
@@ -502,35 +397,23 @@
             </div>
         </div>
 
-        <div id='magic'>
+        <div id='magic' style="width: 50%">
             <h2>Czarë</h2>
             <table id="magic-table">
                 <thead>
                     <tr>
                         <th style='text-align:left;'><strong>Zôklãcé</strong></th>
                         <th><strong>Kòszt mòcë</strong></th>
+                        <th class="editor-mode"><strong>+ / -</strong></th>
                         <th><strong>Próba czarzëniégò</strong></th>
                         <th><strong>Czas dzëjaniégò</strong></th>
                         <th style='text-align:left;'><strong>Òpis</strong></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="rage">
-                        <td id="rage-spell" style='text-align:left;'>Barch</td>
-                        <td id="rage-spell-cost">5</td>
-                        <td><button type="button" class="magic-button" id="rage-spell-button" onclick="cast_spell('rage-spell-button', 'rage-spell-cost')">Szmërgnij zôklãcé</button></td>
-                        <td id="rage-spell-duration">3 ruńdë</td>
-                        <td style='text-align:left;'>Zaczarzónô persóna ajtakùjë nôblëższą pòstacëjã</td>
-                    </tr>
-                    <tr id="bloodlust">
-                        <td id="bloodlust-spell" style='text-align:left;'>Pôcha krwi</td>
-                        <td id="bloodlust-spell-cost">5</td>
-                        <td><button type="button" class="magic-button" id="bloodlust-spell-button" onclick="cast_spell('bloodlust-spell-button', 'bloodlust-spell-cost')">Szmërgnij zôklãcé</button></td>
-                        <td id="bloodlust-spell-duration">3 ruńdë</td>
-                        <td style='text-align:left;'>Zaczarzónô persóna mòże wëprowadzëc dristatak bez sztrôfë</td>
-                    </tr>
+                <tbody id="magic-spells">
                 </tbody>
             </table>
+            <button type="button" class="editor-mode-button" onclick="add_new_spell()">Dodôj zôklãcé</button>
         </div>
 
         <div id='equipment'>
@@ -547,7 +430,7 @@
                 <tbody id='equipment-items'>
                 </tbody>
             </table>
-            <button type="button" class="equip-button" onclick="add_item_to_equipment()">Dodôj przedmiot</button>
+            <button type="button" class="equip-button" onclick="add_new_item_to_equipment()">Dodôj przedmiot</button>
         </div>
     </body>
 </html>
