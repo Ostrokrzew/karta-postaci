@@ -116,9 +116,7 @@ function add_spell(row_id, content) {
 }
 
 function current_skills() {
-    let data = {};
-    data['generic'] = {};
-    data['detailed'] = {};
+    let data = {'generic': {}, 'detailed': {}};
     for (let item of document.getElementsByClassName("skill_gen")) {
         data["generic"][item.id] = item.innerHTML;
     }
@@ -343,7 +341,6 @@ async function commit_changes(changes_json, filename, make_pr = false) {
 
     const octokit = new module.Octokit({auth: token});
 
-    // get current head
     let ref_response = await octokit.request('GET /repos/Ostrokrzew/karta-postaci/git/ref/heads/after-game', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
@@ -351,7 +348,6 @@ async function commit_changes(changes_json, filename, make_pr = false) {
     });
     console.log(ref_response);
 
-    // get head's commit hash
     let last_commit_response = await octokit.request('GET ' + ref_response.data.url, {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
@@ -359,7 +355,6 @@ async function commit_changes(changes_json, filename, make_pr = false) {
     });
     console.log(last_commit_response);
 
-    // get more detailed info about head's last commit
     let head_response = await octokit.request('GET ' + last_commit_response.data.object.url + '?recursive=1', {
         owner: 'Ostrokrzew',
         repo: 'karta-postaci',
