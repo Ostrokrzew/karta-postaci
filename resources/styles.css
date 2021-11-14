@@ -16,7 +16,7 @@ thead {
 
 h1 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-    color: deeppink;
+    color: orangered;
 }
 
 h2 {
@@ -31,7 +31,7 @@ h3 {
 
 h4 {
     text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
-    color: hotpink;
+    color: lightpink;
     font-size: large;
 }
 

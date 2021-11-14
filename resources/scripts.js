@@ -184,6 +184,7 @@ function clear_tables() {
 }
 
 function save_to_cache() {
+    pause_editor_mode();
     try {
         localStorage.setItem("data", JSON.stringify(current_data(), null, 4));
         localStorage.setItem("equip", JSON.stringify(current_equipment(), null, 4));
@@ -193,9 +194,11 @@ function save_to_cache() {
     } catch (err) {
         console.log("Data cannot be saved. Error: " + err);
     }
+    restore_editor_mode();
 }
 
 function load_from_cache() {
+    pause_editor_mode();
     let info = localStorage.getItem("data")
     try {
         if (!info) {
@@ -263,6 +266,7 @@ function load_from_cache() {
         add_skill(id, json_obj['detailed'][id], true);
     }
 
+    restore_editor_mode();
     console.log("Cached data loaded.");
 }
 
@@ -316,6 +320,15 @@ function leave_editor_mode() {
     document.getElementById("biography").style.backgroundColor = "initial";
     document.getElementById("edit").style.display = 'inline';
     document.getElementById("leave-edit").style.display = 'none';
+}
+
+function pause_editor_mode() {
+    leave_editor_mode();
+    document.getElementById("leave-edit").style.display = 'inline';
+}
+
+function restore_editor_mode() {
+    enter_editor_mode();
 }
 
 async function commit_changes(changes_json, filename, make_pr = false) {
@@ -406,10 +419,12 @@ async function commit_changes(changes_json, filename, make_pr = false) {
 }
 
 async function save() {
+    pause_editor_mode();
     await commit_changes(current_data(), 'info.json');
     await commit_changes(current_spells(), 'spells.json');
     await commit_changes(current_skills(), 'skills.json');
     await commit_changes(current_equipment(), 'equip.json', true);
+    restore_editor_mode();
 }
 
 async function load_json(filename) {
@@ -484,6 +499,12 @@ function colorize_hp() {
 
 function colorize_mana() {
     colorize("mana", "max-mana");
+}
+
+async function load_on_demand() {
+    pause_editor_mode();
+    await load_all();
+    restore_editor_mode();
 }
 
 async function load_all() {

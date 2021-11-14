@@ -8,7 +8,7 @@
         <link rel="icon" type="image/png" href="images/favicon.png">
     </head>
     <body onload="init_site()">
-        <div style="float: right; text-align: center">
+        <div style="float: right; text-align: center; width: 24%">
             <a id="portrait_big" href="images/mniszka_l.jpg"><img id="portrait" src="images/mniszka_s.jpg" referrerpolicy="no-referrer" alt="Portret"></a><br>
             <button type="button" class="dice-button" id="k3" onclick="document.getElementById('k3').innerText = throw_d3()">K3</button>
             <button type="button" class="dice-button" id="k4" onclick="document.getElementById('k4').innerText = throw_d4()">K4</button>
@@ -19,24 +19,24 @@
             <button type="button" class="dice-button" id="k32" onclick="document.getElementById('k32').innerText = throw_d32()">K32</button>
             <button type="button" class="dice-button" id="k100" onclick="document.getElementById('k100').innerText = throw_d100()">K100</button><br>
             <button type="submit" id="save_local" class="editor-mode-button" onclick="save_to_cache()">Zôpiszë zmianë w cache'u</button>
-            <button type="submit" id="load_local" class="editor-mode-button" onclick="load_from_cache()">Wczëtôj zmianë z cache'a</button><br>
+            <button type="submit" id="load_local" class="editor-mode-button" onclick="load_from_cache()">Wczëtôj zôpis z cache'a</button><br>
             <button type="submit" id="save" class="editor-mode-button" onclick="save()">Zôpiszë zmianë</button>
-            <button type="submit" id="load" class="editor-mode-button" onclick="load_all()">Wczëtôj zmianë</button><br>
+            <button type="submit" id="load" class="editor-mode-button" onclick="load_on_demand()">Reset zmianów</button><br>
             <button type="button" id="edit" class="non-editor-mode-button" onclick="enter_editor_mode()">Edicjô</button>
             <button type="button" id="leave-edit" class="editor-mode-button" onclick="leave_editor_mode()">Wińdzë z edicjë</button>
         </div>
 
-        <div id="info">
+        <div id="info" style="width: 76%">
             <h1>Miono: <dev id="name" class="non-editable"></dev></h1>
             <h2>Rasa: <dev id='race' class="non-editable"></dev></h2>
             <h2>Wark: <dev id='profession' class="non-editable"></dev></h2>
-            <h2 style="color: orangered">Biografiô</h2>
-            <p id='biography' style="width: 50%"></p>
+            <h2>Biografiô</h2>
+            <p id='biography'></p>
         </div>
 
         <div id='characteristics'>
             <h2>Charakteristika</h2>
-            <div id="points" style="display: flex; flex-wrap: nowrap;">
+            <div id="points" style="display: flex; flex-wrap: nowrap; width: 76%">
                 <div id='health-points' style="margin-right: 8px">
                     <h3>Pùńktë Żëcégò</h3>
                     <table>
@@ -92,7 +92,7 @@
             </div>
 
             <h3>Przédné znanczi</h3>
-            <div id='abilities' style="display: flex; flex-wrap: nowrap;">
+            <div id='abilities' style="display: flex; flex-wrap: nowrap; width: 76%">
                 <div style="margin-right: 8px">
                     <table>
                         <thead>
@@ -397,7 +397,7 @@
             </div>
         </div>
 
-        <div id='magic' style="width: 50%">
+        <div id='magic'>
             <h2>Czarë</h2>
             <table id="magic-table">
                 <thead>
