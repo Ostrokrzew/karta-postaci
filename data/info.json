@@ -1,0 +1,23 @@
+{
+    "name": "Ifigeniô",
+    "race": "Bòrówcka z Ôstu",
+    "profession": "Mniszka",
+    "biography": "",
+    "portrait": "https://ostrokrzew.github.io/karta-postaci/images/mniszka_s.jpg",
+    "portrait_big": "https://ostrokrzew.github.io/karta-postaci/images/mniszka_l.jpg",
+    "max-hp": "10",
+    "max-mana": "10",
+    "physique": "5",
+    "strength": "4",
+    "stamina": "5",
+    "speed": "8",
+    "intelligence": "10",
+    "dexterity": "8",
+    "sober-mind": "6",
+    "attack": "8",
+    "defence": "2",
+    "known-weapon-level": "5",
+    "weapon": "Topór",
+    "weapon-category": "2",
+    "weapon-damage": "1k6"
+}

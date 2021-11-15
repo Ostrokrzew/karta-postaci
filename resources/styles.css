@@ -1,0 +1,114 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
+}
+
+table {
+    border: 2px solid black;
+}
+
+thead {
+    font-size: large;
+    color: black;
+}
+
+h1 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: orangered;
+}
+
+h2 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: crimson;
+}
+
+h3 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: hotpink;
+}
+
+h4 {
+    text-shadow: 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black, 0 0 0.2em black;
+    color: lightpink;
+    font-size: large;
+}
+
+body {
+    background-color: rgba(119, 130, 155, 0.637);
+}
+
+.small-button {
+    background-color: aquamarine;
+    border-color: teal;
+    font-size: medium;
+    width: 56px;
+}
+
+.big-button {
+    background-color: aquamarine;
+    border-color: teal;
+    font-size: medium;
+    width: 144px;
+    margin: 2px;
+}
+
+.combat-button {
+    border-color: coral;
+    margin: 2px;
+    height: 4em;
+    width: 8em;
+    font-size: larger;
+    background-color: lightcoral;
+}
+
+.magic-button {
+    background-color: mediumvioletred;
+    border-color: darkviolet;
+    font-size: medium;
+    margin: 2px;
+    height: 4em;
+    width: 10em;
+}
+
+.dice-button {
+    background-color: floralwhite;
+    border-color: dimgrey;
+    font-size: medium;
+    width: 64px;
+    height: 64px;
+    margin: 2px;
+}
+
+.equip-button {
+    border-color: darkorange;
+    margin-top: 0.4em;
+    height: 2em;
+    width: 8em;
+    font-size: larger;
+    background-color: goldenrod;
+}
+
+.non-editor-mode-button {
+    border-color: darkorange;
+    margin-top: 0.4em;
+    height: 3em;
+    width: 8em;
+    font-size: larger;
+    background-color: goldenrod;
+}
+
+.editor-mode {
+    display: none;
+}
+
+.editor-mode-button {
+    display: none;
+    border-color: darkorange;
+    margin-top: 0.4em;
+    height: 3em;
+    width: 8em;
+    font-size: larger;
+    background-color: goldenrod;
+}
