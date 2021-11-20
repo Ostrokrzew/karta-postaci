@@ -115,15 +115,19 @@ function add_spell(row_id, content) {
     table_body.appendChild(row);
 }
 
-function current_skills() {
-    let data = {'generic': {}, 'detailed': {}};
+function current_skills_gen() {
+    let data = {};
     for (let item of document.getElementsByClassName("skill_gen")) {
-        data["generic"][item.id] = item.innerHTML;
+        data[item.id] = item.innerHTML;
     }
+    return data;
+}
+
+function current_skills_det() {
+    let data = {};
     for (let item of document.getElementsByClassName("skill_det")) {
-        data["detailed"][item.id] = item.innerHTML;
+        data[item.id] = item.innerHTML;
     }
-    console.log(JSON.stringify(data, null, 4));
     return data;
 }
 
@@ -187,7 +191,8 @@ function save_to_cache() {
         localStorage.setItem("data", JSON.stringify(current_data(), null, 4));
         localStorage.setItem("equip", JSON.stringify(current_equipment(), null, 4));
         localStorage.setItem("spells", JSON.stringify(current_spells(), null, 4));
-        localStorage.setItem("skills", JSON.stringify(current_skills(), null, 4));
+        localStorage.setItem("skills_gen", JSON.stringify(current_skills_gen(), null, 4));
+        localStorage.setItem("skills_det", JSON.stringify(current_skills_det(), null, 4));
         console.log("Data saved to cache");
     } catch (err) {
         console.log("Data cannot be saved. Error: " + err);
@@ -246,22 +251,32 @@ function load_from_cache() {
         add_spell(id, json_obj[id]);
     }
 
-    let skills = localStorage.getItem("skills")
+    let skills_gen = localStorage.getItem("skills_gen")
     try {
-        if (!skills) {
+        if (!skills_gen) {
             throw 'empty';
         }
     } catch (err) {
         console.log("Skills data you're trying to load is " + err);
     }
 
-    json_obj = JSON.parse(skills);
-
-    for (const id in json_obj['generic']) {
-        add_skill(id, json_obj['generic'][id], false);
+    json_obj = JSON.parse(skills_gen);
+    for (const id in json_obj) {
+        add_skill(id, json_obj[id], false);
     }
-    for (const id in json_obj['detailed']) {
-        add_skill(id, json_obj['detailed'][id], true);
+
+    let skills_det = localStorage.getItem("skills_det")
+    try {
+        if (!skills_det) {
+            throw 'empty';
+        }
+    } catch (err) {
+        console.log("Skills data you're trying to load is " + err);
+    }
+
+    json_obj = JSON.parse(skills_det);
+    for (const id in json_obj) {
+        add_skill(id, json_obj[id], true);
     }
 
     restore_editor_mode();
@@ -417,7 +432,8 @@ async function save() {
     pause_editor_mode();
     await commit_changes(current_data(), 'info.json');
     await commit_changes(current_spells(), 'spells.json');
-    await commit_changes(current_skills(), 'skills.json');
+    await commit_changes(current_skills_gen(), 'skills_gen.json');
+    await commit_changes(current_skills_det(), 'skills_det.json');
     await commit_changes(current_equipment(), 'equip.json', true);
     restore_editor_mode();
 }
@@ -437,7 +453,7 @@ async function load_json(filename) {
     return json_obj;
 }
 
-function load(json_obj) {
+function load_info(json_obj) {
     for (const id in json_obj) {
         if (!id.includes('portrait')) {
             document.getElementById(id).innerHTML = json_obj[id];
@@ -466,12 +482,16 @@ function load_spells(json_obj) {
     console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
 }
 
-function load_skills(json_obj) {
-    for (const id in json_obj['generic']) {
-        add_skill(id, json_obj['generic'][id], false);
+function load_skills_gen(json_obj) {
+    for (const id in json_obj) {
+        add_skill(id, json_obj[id], false);
     }
-    for (const id in json_obj['detailed']) {
-        add_skill(id, json_obj['detailed'][id], true);
+    console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
+}
+
+function load_skills_det(json_obj) {
+    for (const id in json_obj) {
+        add_skill(id, json_obj[id], true);
     }
     console.log("Loaded data:\n" + JSON.stringify(json_obj, null, 4));
 }
@@ -504,7 +524,7 @@ async function load_on_demand() {
 
 async function load_all() {
     let json_obj = await load_json('info.json');
-    load(json_obj);
+    load_info(json_obj);
     load_images(json_obj);
 
     clear_tables();
@@ -515,8 +535,11 @@ async function load_all() {
     json_obj = await load_json('spells.json');
     load_spells(json_obj);
 
-    json_obj = await load_json('skills.json');
-    load_skills(json_obj);
+    json_obj = await load_json('skills_gen.json');
+    load_skills_gen(json_obj);
+
+    json_obj = await load_json('skills_det.json');
+    load_skills_det(json_obj);
 
     weapon_arithmetic();
     load_hp();
