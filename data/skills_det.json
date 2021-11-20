@@ -1,0 +1,3 @@
+{
+    "skill_det_0": "<td class='non-editable' style='text-align:left;'>Szmërganié fiolkama</td><td id='skill_det_0-points'>1</td><td class='editor-mode'><button type='button' onclick=\"change_amount('skill_det_0-points', 1)\">+ 1</button><button type='button' onclick=\"change_amount('skill_det_0-points', 0)\">- 1</button></td><td><button type='button' class='big-button' id='skill_det_0-button' onclick=\"premium_test('skill_det_0-points', 'skill_det_0-button')\">Szmërgnij knôblã</button></td>\n"
+}
